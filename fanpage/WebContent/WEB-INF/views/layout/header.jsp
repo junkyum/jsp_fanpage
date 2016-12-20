@@ -11,7 +11,7 @@
         <div class="login header-login">
             <c:if test="${empty sessionScope.member}">
                 <a href="<%=cp%>/member/login.do"><span class="glyphicon glyphicon-log-in"></span> 로그인</a> <i></i>
-                <a href="<%=cp%>/member/member.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a>
+                <a href="<%=cp%>/member/member.do"><span class="glyphicon glyphicon-user"></span> asdasd회원가입</a>
             </c:if>
             <c:if test="${not empty sessionScope.member}">
                 <span style="color:blue;">${sessionScope.member.userName}</span>님 <i></i>

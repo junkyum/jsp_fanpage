@@ -1,0 +1,149 @@
+@CHARSET "UTF-8";
+
+/** Page headers **/
+#page-header {
+	    margin:10px 0 12px 0;
+	    font-family: NanumGothic, 나눔고딕, "Malgun Gothic", "맑은 고딕", sans-serif;
+	    min-height: 44px;
+}
+#page-header .header-brand { 
+    float:left;
+    display: inline-block; 
+    padding-right:20px;
+    padding:0;
+    margin:0;
+}
+#page-header .header-brand  a{ 
+    text-decoration: none;
+}
+
+#page-header .logo{
+    color: #2984ff;
+    filter: mask(color=red) shadow(direction=135) chroma(color=red);
+    font-style: italic; font-family: arial black; font-size: 30px; font-weight: bold;
+}
+
+#page-header .header-login {
+	min-height:27px;margin-top:17px;
+}
+#page-header .login {
+	float:right; position:relative;
+}
+#page-header .login i {
+	display:inline-block; margin:0 3px 0 3px;
+	position:relative; top:1px;
+	width:1px; height:11px; background: #c0c0c0;
+}
+#page-header .header-search {
+	float:right; position:relative; top:10px; margin:1px 10px 20px 20px; max-width:226px;
+}
+#page-header .header-search * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+/** jumbotron **/
+.jumbotron {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-family: NanumGothic, 나눔고딕, "Malgun Gothic", "맑은 고딕", sans-serif;  
+  background-color: #eee;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.jumbotron h1 {
+  margin-top: 0;
+}
+.jumbotron p {
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.6;
+  font-size: 17px;
+}
+.jumbotron .container {
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    font-size: 24px;
+    text-align: left;
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+  .jumbotron h1 {
+    font-size: 40px;
+    line-height: 1;
+  }
+}
+
+@media (min-width: 992px) {
+  .jumbotron h1,
+  .jumbotron p {
+    margin-right: 100px;
+  }
+}
+
+/**  body **/
+.bodyFrame{
+	min-height: 500px;
+}
+
+.adminBodyFrame{
+	min-height: 600px;
+	padding-top: 80px;
+}
+
+@media (min-width: 768px) {
+  .bodyFrame {
+    padding-left: 35px;
+    padding-right: 35px; 
+  }
+}
+
+.body-title {
+    color: #424951;
+    padding-bottom: 5px;
+    margin: 10px 0 20px 0;
+    border-bottom: 1px solid #dddddd;
+}
+.body-title h3{
+	min-width:300px;
+    font-family: "Malgun Gothic", "Nanum Gothic", "Dotum";
+    font-weight: bold;
+    margin: 0 0 -5px 0;
+    padding-bottom: 5px;
+    display: inline-block;
+    border-bottom: 3px solid #424951;
+}
+    
+/** Footer **/
+.bs-docs-footer {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.bs-docs-footer-links {
+  padding-left: 0;
+  margin-bottom: 0px;
+}
+.bs-docs-footer-links li {
+  display: inline-block;
+}
+.bs-docs-footer-links li + li {
+  margin-left: 5px;
+}
+@media (min-width: 768px) {
+  .bs-docs-footer {
+    text-align: center;
+  }
+  .bs-docs-footer p {
+    margin-bottom: 0;
+  }
+}

@@ -34,6 +34,9 @@
     <div class="bodyFrame">
         <div>
             내용...
+           <p>
+           <iframe width="850" height="480" src="https://www.youtube.com/embed/ePpPVE-GGJw?rel=0" allowfullscreen></iframe>
+           </p>
         </div>
     </div>
 </div>

@@ -6,7 +6,7 @@
    String cp = request.getContextPath();
 %>
   <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-default" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -35,7 +35,17 @@
                     <li>
                         <a href="#">방명록</a>
                     </li>
-                    <li class="dropdown">
+                    <c:if test="${empty sessionScope.member}">
+                   
+                    <li>
+                    <a href="#"><span class="glyphicon glyphicon-log-in"></span>로그인</a>
+                    </li>
+                    <li>
+                    <a href="#"><span class="glyphicon glyphicon-user"></span>회원가입</a>
+                    </li>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.member}">
+                	<li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">내정보 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
@@ -49,6 +59,16 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                	<a href="#"><span style="color:blue;">${sessionScope.member.userName}</span>준겸님</a>
+                	<c:if test="${sessionScope.member.userId=='admin'}">
+                    <a href="<%=cp%>/admin/main.do"> 관리자</a>
+               	    </c:if>
+               	    </li>
+               	    <li>
+              		<a href="<%=cp%>/member/logout.do"><span class="glyphicon glyphicon-log-out"></span>로그아웃</a>
+                    </li>
+                    </c:if>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -56,16 +76,3 @@
         <!-- /.container -->
     </nav>
 
-<div class="login header-login">
-            <c:if test="${empty sessionScope.member}">
-                <a href="<%=cp%>/member/login.do"><span class="glyphicon glyphicon-log-in"></span> 로그인</a> <i></i>
-                <a href="<%=cp%>/member/member.do"><span class="glyphicon glyphicon-user"></span> 회원가입</a>
-            </c:if>
-            <c:if test="${not empty sessionScope.member}">
-                <span style="color:blue;">${sessionScope.member.userName}</span>님 <i></i>
-                <c:if test="${sessionScope.member.userId=='admin'}">
-                    <a href="<%=cp%>/admin/main.do">관리자</a> <i></i>
-                </c:if>
-                <a href="<%=cp%>/member/logout.do"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a>
-            </c:if>
-</div>

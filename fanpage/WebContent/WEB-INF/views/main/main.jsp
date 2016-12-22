@@ -30,12 +30,14 @@
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 </div>
 
+<div></div>
 <div class="container" role="main">
     <div class="bodyFrame">
         <div>
-            내용...
+    
+                내용...
            <p>
-           <!-- <iframe width="850" height="480" src="https://www.youtube.com/embed/ePpPVE-GGJw?rel=0" allowfullscreen></iframe> -->
+        <iframe width="850" height="480" src="https://www.youtube.com/embed/ePpPVE-GGJw?rel=0" allowfullscreen></iframe>
            </p>
         </div>
     </div>

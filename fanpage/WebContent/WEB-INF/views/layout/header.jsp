@@ -6,17 +6,11 @@
    String cp = request.getContextPath();
 %>
   <!-- Navigation -->
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.jsp">teamproj</a>
+                <a class="navbar-brand" href="<%=cp%>/">teamproj</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -27,7 +21,7 @@
                         <a href="#">공지사항</a>
                     </li>
                     <li>
-                        <a href="#">일반게시판</a>
+                        <a href="<%=cp%>/board/list.do">일반게시판</a>
                     </li>
                     <li>
                         <a href="#">포토게시판</a>
@@ -69,6 +63,11 @@
               		<a href="<%=cp%>/member/logout.do"><span class="glyphicon glyphicon-log-out"></span>로그아웃</a>
                     </li>
                     </c:if>
+                    <li>
+                    </li>
+                    <li>
+              		<a href="#"><span class="glyphicon glyphicon-cloud"></span>사이트맵</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

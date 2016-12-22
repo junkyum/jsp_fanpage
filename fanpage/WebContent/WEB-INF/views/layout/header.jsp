@@ -6,7 +6,7 @@
    String cp = request.getContextPath();
 %>
   <!-- Navigation -->
-    <nav class="navbar navbar-inverse" role="navigation">
+    <nav class="navbar navbar-inverse" role="navigation" width = "70%">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">

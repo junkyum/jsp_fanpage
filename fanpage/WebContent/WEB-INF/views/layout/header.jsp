@@ -16,7 +16,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.jsp">fanpage</a>
+                <a class="navbar-brand" href="index.jsp">teamproj</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -24,7 +24,7 @@
                         <a href="#">소개</a>
                     </li>
                     <li>
-                        <a href="#">공지사향</a>
+                        <a href="#">공지사항</a>
                     </li>
                     <li>
                         <a href="#">일반게시판</a>
@@ -49,13 +49,13 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">내정보 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">회원정보보기</a>
+                                <a href="#">정보보기</a>
                             </li>
                             <li>
-                                <a href="#">회원정보수정</a>
+                                <a href="#">정보수정</a>
                             </li>
                             <li>
-                                <a href="#">회원탈퇴</a>
+                                <a href="#">탈퇴</a>
                             </li>
                         </ul>
                     </li>

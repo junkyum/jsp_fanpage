@@ -35,11 +35,13 @@
     <div class="bodyFrame">
         <div>
     
-                내용...
-           <p>
-        <iframe width="850" height="480" src="https://www.youtube.com/embed/ePpPVE-GGJw?rel=0" allowfullscreen></iframe>
-           </p>
+                내용..
+        
         </div>
+        <div style = "margin: auto auto;" >
+        <iframe width="850" height="480" src="https://www.youtube.com/embed/ePpPVE-GGJw?rel=0" allowfullscreen ></iframe>
+        </div>
+         
     </div>
 </div>
 

@@ -6,14 +6,15 @@
    String cp = request.getContextPath();
 %>
   <!-- Navigation -->
-    <nav class="navbar navbar-inverse" role="navigation" width = "70%">
+      <div class="text-center" style="margin: 10px auto;" >
+          <a  href="<%=cp%>/"><img src="<%=cp%>/res/images/logo.jpg" class="img-rounded"></a>
+      </div>
+    <nav class="navbar navbar-default" role="navigation" style = "width: 70%; margin: auto auto;">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="<%=cp%>/">teamproj</a>
-            </div>
+          
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-middle">
                     <li>
                         <a href="#">소개</a>
                     </li>
@@ -29,7 +30,12 @@
                     <li>
                         <a href="#">방명록</a>
                     </li>
-                    <c:if test="${empty sessionScope.member}">
+                   
+                    
+                	
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                 <c:if test="${empty sessionScope.member}">
                    
                     <li>
                     <a href="#"><span class="glyphicon glyphicon-log-in"></span>로그인</a>
@@ -37,8 +43,8 @@
                     <li>
                     <a href="#"><span class="glyphicon glyphicon-user"></span>회원가입</a>
                     </li>
-                    </c:if>
-                    <c:if test="${not empty sessionScope.member}">
+                 </c:if>
+                 <c:if test="${not empty sessionScope.member}">
                 	<li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">내정보 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -54,7 +60,7 @@
                         </ul>
                     </li>
                     <li>
-                	<a href="#"><span style="color:blue;">${sessionScope.member.userName}</span>준겸님</a>
+                 	<a href="#"><span style="color:blue;">${sessionScope.member.userName}</span>준겸님</a>
                 	<c:if test="${sessionScope.member.userId=='admin'}">
                     <a href="<%=cp%>/admin/main.do"> 관리자</a>
                	    </c:if>

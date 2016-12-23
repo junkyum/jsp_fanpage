@@ -21,6 +21,14 @@ public class BoardServlet extends MyServlet{
 			
 			forward(req, resp, "/WEB-INF/views/board/list.jsp");
 		}
+		if(uri.indexOf("created.do")!=-1) {
+			
+			forward(req, resp, "/WEB-INF/views/board/created.jsp");
+		}
+		if(uri.indexOf("article.do")!=-1) {
+			
+			forward(req, resp, "/WEB-INF/views/board/article.jsp");
+		}
 	}
 
 }

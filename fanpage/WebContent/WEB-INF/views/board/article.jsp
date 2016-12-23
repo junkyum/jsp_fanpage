@@ -33,13 +33,38 @@
 
 <div class="container" role="main">
     <div class="bodyFrame">
-        <div class="body-title">
-          <h3><span class="glyphicon glyphicon-tower"></span> 제목 <small>작은제목</small></h3>
-        </div>
-    
-        <div>
-            내용...
-        </div>
+   		<div class="page-header" style = "text-align:center;">
+  		<h1>게시글</h1>
+  		<small>회원들과 새로운 정보를 나누세요</small>
+		</div>
+   		
+   		<table class="table">
+		<tr>
+		<td colspan="3" style = "width:100%; text-align:center">${dto.subject}</td>
+		</tr>
+		<tr>
+		<td style = "width:20%;">이름:헤헤</td>
+		<td style = "width:60%"></td>
+		<td style = "width:20%; text-align:right">날짜:2016.6.5 | 조회수:10</td>
+		</tr>
+		
+		<tr>
+		<td colspan = "3" style = "height:400px;">헤헤헤</td>
+		<tr>
+		
+		
+		</table>
+		
+		<hr>
+		<div style="float: left; min-width: 85px; text-align: right;">
+	      <button type="button" class="btn btn-primary btn-sm bbtn" onclick="javascript:location.href='<%=cp%>/board/list.do';"> 답변</button>  
+		  <button type="button" class="btn btn-primary btn-sm bbtn" onclick="javascript:location.href='<%=cp%>/board/list.do';"> 수정</button>
+		  <button type="button" class="btn btn-primary btn-sm bbtn" onclick="javascript:location.href='<%=cp%>/board/list.do';"> 삭제</button>	    
+	    </div>
+
+		<div style="float: right; min-width: 85px; text-align: right;">
+	      <button type="button" class="btn btn-primary btn-sm bbtn" onclick="javascript:location.href='<%=cp%>/board/list.do';"> 목록으로</button>  
+	    </div>
     </div>
 </div>
 

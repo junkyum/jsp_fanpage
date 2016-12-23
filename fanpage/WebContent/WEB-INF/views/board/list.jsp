@@ -28,6 +28,25 @@
 <link rel="stylesheet" href="<%=cp%>/res/css/layout/layout.css"
 	type="text/css" />
 
+<style type="text/css">
+.table th, .table td {
+    font-weight: normal;
+    border-top: none;
+}
+.table thead tr th{
+     border-bottom: none;
+} 
+.table thead tr{
+    border: #d5d5d5 solid 1px;
+     background: #4C4C4C; color: white;
+} 
+.table td {
+    border-bottom: #d5d5d5 solid 1px;
+}
+.table td a{
+    color: #000;
+}
+</style>
 <script type="text/javascript"
 	src="<%=cp%>/res/jquery/js/jquery-1.12.4.min.js"></script>
 
@@ -41,33 +60,60 @@
 		
 
 	<div class="container" role="main">
-	   <div style="margin-bottom: 10px;">
+	   <div style="margin: 10px;">
 		<form name="searchForm" method="post" class="form-inline">
-			<select class="form-control input-sm" name="searchKey" >
-			 <option value="#">일반</option>
-		     <option value="#">인기</option>
-		     <option value="#">추천</option>
+			<select class="form-control input-sm" name="sort" >
+			 <option value="#">번호순</option>
+		     <option value="#">인기순</option>
+		     <option value="#">추천순</option>
 		    </select>
 		</form>
         		
 	   </div>
-	   <div>
-		<table class="table" >
+	   <div class="table-responsive" style="clear: both;">
+		<table class="table table-hover" >
+		
+	 			<thead>
+	                 <tr>
+	                     <th class="text-center" style="width: 100px;">번호</th>
+	                     <th class="text-center">제목</th>
+	                     <th class="text-center" style="width: 150px;">글쓴이</th>
+	                     <th class="text-center" style="width: 150px;">날짜</th>
+	                     <th class="text-center" style="width: 100px;">조회수</th> 
+	                    </tr>
+	                </thead>
 		
 		<tr>
-		<td>번호</td>
-		<td>제목</td>
-		<td>이름</td>
-		<td>조회수</td>
+		<td class="text-center" style="width: 100px;">1</td>
+		<td class="text-center"><a href ="<%=cp%>/board/article.do">냐냐</a></td>
+		<td class="text-center" style="width: 150px;">00</td>
+		<td class="text-center" style="width: 150px;">날짜</td>
+		<td class="text-center" style="width: 150px;">1</td>
 		</tr>
-		
 		<tr>
-		<td>1</td>
-		<td>냐냐</td>
-		<td>준겜</td>
-		<td>10</td>
+		<td class="text-center" style="width: 100px;">1</td>
+		<td class="text-center">냐냐</td>
+		<td class="text-center" style="width: 150px;">ㅇㅇ</td>
+		<td class="text-center" style="width: 150px;">날짜</td>
+		<td class="text-center" style="width: 150px;">1</td>
+		</tr>
+		<tr>
+		<td class="text-center" style="width: 100px;">1</td>
+		<td class="text-center">냐냐</td>
+		<td class="text-center" style="width: 150px;">ㅇㅇ</td>
+		<td class="text-center" style="width: 150px;">날짜</td>
+		<td class="text-center" style="width: 150px;">1</td>
+		</tr>
+		<tr>
+		<td class="text-center" style="width: 100px;">1</td>
+		<td class="text-center">냐냐</td>
+		<td class="text-center" style="width: 150px;">ㅇㅇ</td>
+		<td class="text-center" style="width: 150px;">날짜</td>
+		<td class="text-center" style="width: 150px;">1</td>
 		</tr>	
+		
 		</table>
+		
 	  </div>
 	  <div style="clear: both;">
 	        		<div style="float: left; width: 20%; min-width: 85px;">

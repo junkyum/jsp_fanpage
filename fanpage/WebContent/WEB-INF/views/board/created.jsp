@@ -33,13 +33,44 @@
 
 <div class="container" role="main">
     <div class="bodyFrame">
-        <div class="body-title">
-          <h3><span class="glyphicon glyphicon-tower"></span> 제목 <small>작은제목</small></h3>
-        </div>
-    
-        <div>
-            내용...
-        </div>
+   		<div class="page-header" style = "text-align:center;">
+  		<h1>새로운 글</h1>
+  		<small>회원들과 새로운 정보를 나누세요</small>
+		</div>
+   		
+   		<div >
+		    <table class="table table-striped" style = "height: 400px;">
+		    
+		    <tr>
+			<td style = "width: 20%; background: darkgrey; color: white; border:1px solid #ccc;" class="text-center" >
+			작성자명
+			</td>
+			<td style = "width: 80%; background: darkgrey; color: white; border:1px solid #ccc;">
+			준겸
+			</td>
+			<tr>
+			<td style = "width: 20%; border:1px solid #ccc;" class="text-center" >
+			제목
+			</td>
+			<td style = "width: 80%; border:1px solid #ccc;">
+			<input type = "text" name = "uesrName" class="form-control">
+			</td>
+			</tr>
+			<tr style = "height: 370px;">
+			<td style = "width: 20%; border:1px solid #ccc;" class="text-center">
+			내용
+			</td>
+			<td style = "width: 80%; border:1px solid #ccc;">
+			<textarea class="form-control" style = "height: 100%; "></textarea>
+			</td>
+			</tr>
+			</table>
+		</div>
+		<hr>
+		<div style="float: right; min-width: 85px; text-align: right;">
+	      <button type="button" class="btn btn-primary btn-sm bbtn" onclick="javascript:location.href='<%=cp%>/board/created.do';"> 글쓰기</button>
+			<button type="button" class="btn btn-primary btn-sm bbtn" onclick="javascript:location.href='<%=cp%>/board/list.do';"> 취소</button>	    
+	    </div>
     </div>
 </div>
 

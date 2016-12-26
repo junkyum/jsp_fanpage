@@ -9,7 +9,7 @@
       <div class="text-center" style="margin: 10px auto;" >
           <a  href="<%=cp%>/"><img src="<%=cp%>/res/images/logo.jpg" class="img-rounded"></a>
       </div>
-    <nav class="navbar navbar-default" role="navigation" style = "width: 70%; margin: auto auto;">
+    <nav class="navbar navbar-default" role="navigation" style = "width: 1200px; margin: auto auto;">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
           

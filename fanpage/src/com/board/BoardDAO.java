@@ -267,4 +267,173 @@ public class BoardDAO {
 
 		return dto;
 	}
+	public BoardDTO preReadBoard(int groupNum, int orderNo, String searchKey, String searchValue){
+	     BoardDTO dto=null;
+		 PreparedStatement pstmt=null;
+	        ResultSet rs=null;
+	        StringBuffer sb = new StringBuffer();
+
+	        try {
+	            if(searchValue!=null && searchValue.length() != 0) {
+	                sb.append("SELECT ROWNUM, tb.* FROM (SELECT boardNum, subject FROM board b ");
+	    			sb.append(" JOIN member1 m ON b.userId=m.userId");
+	    			if(searchKey.equals("created"))
+	    				sb.append("           WHERE (TO_CHAR(created, 'YYYY-MM-DD') = ? ) AND ");
+	    			else if(searchKey.equals("userName"))
+	    				sb.append("           WHERE (INSTR(userName, ?) = 1 ) AND ");
+	    			else
+	    				sb.append("           WHERE (INSTR(" + searchKey + ", ?) >= 1 ) AND ");
+	    			
+	                sb.append("     (( groupNum = ? AND orderNo < ?) ");
+	                sb.append("         OR (groupNum > ? )) ");
+	                sb.append("         ORDER BY groupNum ASC, orderNo DESC) tb WHERE ROWNUM = 1 ");
+
+	                pstmt=conn.prepareStatement(sb.toString());
+	                
+	                pstmt.setString(1, searchValue);
+	                pstmt.setInt(2, groupNum);
+	                pstmt.setInt(3, orderNo);
+	                pstmt.setInt(4, groupNum);
+				} else {
+	                sb.append("SELECT ROWNUM, tb.* FROM ( ");
+	                sb.append("     SELECT boardNum, subject FROM board b JOIN member1 m ON b.userId=m.userId ");                
+	                sb.append("  WHERE (groupNum = ? AND orderNo < ?) ");
+	                sb.append("         OR (groupNum > ? ) ");
+	                sb.append("         ORDER BY groupNum ASC, orderNo DESC) tb WHERE ROWNUM = 1 ");
+
+	                pstmt=conn.prepareStatement(sb.toString());
+	                pstmt.setInt(1, groupNum);
+	                pstmt.setInt(2, orderNo);
+	                pstmt.setInt(3, groupNum); 
+				}
+
+	            rs=pstmt.executeQuery();
+
+	            if(rs.next()) {
+	                dto=new BoardDTO();
+	                dto.setBoardNum(rs.getInt("boardNum"));
+	                dto.setSubject(rs.getString("subject"));
+	            }
+	            rs.close();
+	            pstmt.close();
+	        } catch (Exception e) {
+	            System.out.println(e.toString());
+	        }
+	    
+	        return dto;
+	}
+	public BoardDTO nextReadBoard(int groupNum, int orderNo, String searchKey, String searchValue)
+	{
+		 BoardDTO dto=null;
+		 PreparedStatement pstmt=null;
+	        ResultSet rs=null;
+	        StringBuffer sb = new StringBuffer();
+
+	        try {
+	            if(searchValue!=null && searchValue.length()!= 0) {
+	                sb.append("SELECT ROWNUM, tb.* FROM ( ");
+	                sb.append("  SELECT boardNum, subject ");
+	    			sb.append("               FROM board b");
+	    			sb.append("               JOIN member1 m ON b.userId=m.userId");
+	    			if(searchKey.equals("created"))
+	    				sb.append("           WHERE (TO_CHAR(created, 'YYYY-MM-DD') = ? ) AND ");
+	    			else if(searchKey.equals("userName"))
+	    				sb.append("           WHERE (INSTR(userName, ?) = 1) AND ");
+	    			else
+	    				sb.append("           WHERE (INSTR(" + searchKey + ", ?) >= 1) AND ");
+	    			
+	                sb.append("     (( groupNum = ? AND orderNo > ?) ");
+	                sb.append("         OR (groupNum < ? )) ");
+	                sb.append("         ORDER BY groupNum DESC, orderNo ASC) tb WHERE ROWNUM = 1 ");
+
+	                pstmt=conn.prepareStatement(sb.toString());
+	                pstmt.setString(1, searchValue);
+	                pstmt.setInt(2, groupNum);
+	                pstmt.setInt(3, orderNo);
+	                pstmt.setInt(4, groupNum);
+
+				} 
+	            else {
+	                sb.append("SELECT ROWNUM, tb.* FROM ( ");
+	                sb.append("     SELECT boardNum, subject FROM board b JOIN member1 m ON b.userId=m.userId ");
+	                sb.append("  WHERE (groupNum = ? AND orderNo > ?) ");
+	                sb.append("         OR (groupNum < ? ) ");
+	                sb.append("         ORDER BY groupNum DESC, orderNo ASC) tb WHERE ROWNUM = 1 ");
+
+	                pstmt=conn.prepareStatement(sb.toString());
+	                pstmt.setInt(1, groupNum);
+	                pstmt.setInt(2, orderNo);
+	                pstmt.setInt(3, groupNum);
+	            }
+
+	            rs=pstmt.executeQuery();
+
+	            if(rs.next()) {
+	                dto=new BoardDTO();
+	                dto.setBoardNum(rs.getInt("boardNum"));
+	                dto.setSubject(rs.getString("subject"));
+	            }
+	            rs.close();
+	            pstmt.close();
+	        } catch (Exception e) {
+	            System.out.println(e.toString());
+	        }
+
+	        return dto;
+	}
+	 public int updateOrderNo(int groupNum,int orderNo)
+	    {
+	    	int result = 0;
+	    	PreparedStatement pstmt=null;
+	    	String sql;
+	    	try {
+				sql="UPDATE board set orderNo=orderNo+1 where groupNum = ? and orderNo > ?";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, groupNum);
+				pstmt.setInt(2, orderNo);
+				result=pstmt.executeUpdate();
+				pstmt.close();
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			}
+	    	return result;
+	    }
+	 public int deleteBoard(int boardNum)
+	    {
+	    	int result = 0;
+	    	PreparedStatement pstmt=null;
+	    	String sql;
+	    	try {
+				sql="DELETE from board where boardNum IN ";
+				sql+="(select boardNum from board start with boardNum=? connect by prior boardNum=parent)";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, boardNum);
+				result=pstmt.executeUpdate();
+				pstmt.close();
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			}
+	    	return result;
+	    }
+	 public int updateBoard(BoardDTO dto)
+	    {
+	    	int result =  0;
+			PreparedStatement pstmt = null;
+			String sql;
+			try {
+				
+				sql = "update board set subject=?,content=? where boardNum=?";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, dto.getSubject());
+				pstmt.setString(2, dto.getContent());
+				pstmt.setInt(3, dto.getBoardNum());
+				result = pstmt.executeUpdate();
+				pstmt.close();
+			} 
+			catch (Exception e)
+			{
+				System.out.println(e.toString());
+			}
+			return result;
+	    }
 }

@@ -19,16 +19,16 @@
                         <a href="#">소개</a>
                     </li>
                     <li>
-                        <a href="#">공지사항</a>
+                        <a href="<%=cp%>/notice/list.do">공지사항</a>
                     </li>
                     <li>
                         <a href="<%=cp%>/board/list.do">일반게시판</a>
                     </li>
                     <li>
-                        <a href="#">포토게시판</a>
+                        <a href="<%=cp%>/photo/list.do">포토게시판</a>
                     </li>
                     <li>
-                        <a href="#">방명록</a>
+                        <a href="<%=cp%>/visit/visit.do">방명록</a>
                     </li>
                    
                     
@@ -38,10 +38,10 @@
                  <c:if test="${empty sessionScope.member}">
                    
                     <li>
-                    <a href="#"><span class="glyphicon glyphicon-log-in"></span>로그인</a>
+                    <a href="<%=cp%>/member/login.do"><span class="glyphicon glyphicon-log-in"></span>로그인</a>
                     </li>
                     <li>
-                    <a href="#"><span class="glyphicon glyphicon-user"></span>회원가입</a>
+                    <a href="<%=cp%>/member/member.do"><span class="glyphicon glyphicon-user"></span>회원가입</a>
                     </li>
                  </c:if>
                  <c:if test="${not empty sessionScope.member}">
@@ -52,10 +52,18 @@
                                 <a href="#">정보보기</a>
                             </li>
                             <li>
-                                <a href="#">정보수정</a>
+                                <a href="<%=cp%>/member/update.do">정보수정</a>
                             </li>
                             <li>
-                                <a href="#">탈퇴</a>
+                                <a href="<%=cp%>/member/delete.do" onclick="deleteMem('${userId}');">회원탈퇴</a>
+                                 <script type="text/javascript">
+                                      function deleteMem() {
+                                         if(confirm("회원 탈퇴하십니까?")){
+                                            var chk="<%=cp%>/member/delete.do;
+                                            location.href=url;
+                                        	 }
+                              			}
+                                   </script>
                             </li>
                         </ul>
                     </li>

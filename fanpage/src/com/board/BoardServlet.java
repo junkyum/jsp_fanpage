@@ -30,7 +30,8 @@ public class BoardServlet extends MyServlet{
 		req.setCharacterEncoding("utf-8");
 		String uri=req.getRequestURI();
 		String cp=req.getContextPath();
-		HttpSession seccion = req.getSession();
+		HttpSession session = req.getSession();
+		info = (SessionInfo)session.getAttribute("member");
 		if(info==null)
 		{
 			resp.sendRedirect(cp+"/member/login.do");
@@ -44,9 +45,33 @@ public class BoardServlet extends MyServlet{
 			
 			created(req, resp);
 		}
+		if(uri.indexOf("created_ok.do")!=-1) {
+			
+			created_ok(req, resp);
+		}
 		if(uri.indexOf("article.do")!=-1) {
 			
 			article(req, resp);
+		}
+		if(uri.indexOf("reply.do")!=-1) {
+			
+			reply(req, resp);
+		}
+		if(uri.indexOf("reply_ok.do")!=-1) {
+			
+			reply_ok(req, resp);
+		}
+		if(uri.indexOf("update.do")!=-1) {
+			
+			update(req, resp);
+		}
+		if(uri.indexOf("update_ok.do")!=-1) {
+			
+			update_ok(req, resp);
+		}
+		if(uri.indexOf("delete.do")!=-1) {
+			
+			delete(req, resp);
 		}
 	}
 
@@ -72,13 +97,7 @@ public class BoardServlet extends MyServlet{
 		}
 
 		int numPerPage=10;
-		String rows=req.getParameter("rows");
-
-		if(rows!=null)
-		{
-			numPerPage=Integer.parseInt(rows);
-		}
-
+		
 		int dataCount, total_page;
 
 		if(searchValue.length()==0)
@@ -107,9 +126,9 @@ public class BoardServlet extends MyServlet{
 			n++;
 		}
 
-		String listUrl=cp+"/board/list.do?rows="+numPerPage;
+		String listUrl=cp+"/board/list.do";
 		String articleUrl=cp+"/board/article.do?page="+
-				current_page+"&rows="+numPerPage;
+				current_page;
 		if(searchValue.length()!=0) {
 			listUrl+="&searchKey="+searchKey
 					+"&searchValue="
@@ -136,11 +155,6 @@ public class BoardServlet extends MyServlet{
 	}
 	private void created(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		if(info==null)
-		{//로그인 안됐을때
-			forward(req, resp,"/WEB-INF/views/member/login.jsp");
-			return;
-		}
 		req.setAttribute("mode", "created");
 		forward(req, resp, "/WEB-INF/views/board/created.jsp");
 		
@@ -149,11 +163,6 @@ public class BoardServlet extends MyServlet{
 	{
 		BoardDAO dao = new BoardDAO();
 		String cp = req.getContextPath();
-		if(info==null)
-		{//로그인 안됐을때
-			forward(req, resp, "/WEB-INF/views/member/login.jsp");
-			return;
-		}
 		BoardDTO dto = new BoardDTO();
 		dto.setUserId(info.getUserId());
 		dto.setSubject(req.getParameter("subject"));
@@ -167,15 +176,9 @@ public class BoardServlet extends MyServlet{
 	{
 		BoardDAO dao = new BoardDAO();
 		String cp = req.getContextPath();
-		if(info==null)
-		{//로그인 안됐을때
-			forward(req, resp,"/WEB-INF/views/member/login.jsp");
-			return;
-		}
 		//게시물번호,페이지번호,rows(서치키,서치벨류)
 		int boardNum = Integer.parseInt(req.getParameter("boardNum"));
 		String page = req.getParameter("page");
-		String rows = req.getParameter("rows");
 		String searchKey = req.getParameter("searchKey");
 		String searchValue = req.getParameter("searchValue");
 
@@ -191,7 +194,7 @@ public class BoardServlet extends MyServlet{
 		BoardDTO dto = dao.readBoard(boardNum);
 		//없으면 list로
 		if(dto==null){
-			resp.sendRedirect(cp+"/board/list.do?page="+page+"&rows="+rows);
+			resp.sendRedirect(cp+"/board/list.do?page="+page);
 			return;
 		}
 		// 이전글 다음글
@@ -201,14 +204,13 @@ public class BoardServlet extends MyServlet{
 				searchKey, searchValue);
 
 		//포워딩 jsp에 넘길 데이터
-		String params="page="+page+"&rows="+rows;
+		String params="page="+page;
 		if(searchValue.length()!=0){
 			params+="&searchKey="+searchKey;
 			params+="&searchValue="+URLEncoder.encode(searchValue,"UTF-8");
 		}
 		req.setAttribute("dto",dto);
 		req.setAttribute("page",page);
-		req.setAttribute("rows",rows);
 		req.setAttribute("params",params);
 		req.setAttribute("preReadDto", preReadDto);
 		req.setAttribute("nextReadDto", nextReadDto);
@@ -219,27 +221,14 @@ public class BoardServlet extends MyServlet{
 	{
 		BoardDAO dao = new BoardDAO();
 		String cp = req.getContextPath();
-		if(info==null)
-		{//로그인 안됐을때
-			forward(req, resp,"/WEB-INF/views/member/login.jsp");
-			return;
-		}
 		int boardNum = Integer.parseInt(req.getParameter("boardNum"));
 		String page = req.getParameter("page");
-		String rows = req.getParameter("rows");
-		
 		BoardDTO dto = dao.readBoard(boardNum);
-		if(dto==null)
-		{
-			resp.sendRedirect(cp+"/board/list.do?page="+page+"&rows="+rows);
-			return;
-		}
 		String s="["+dto.getSubject()+"]에 대한 답변\n";
 		dto.setContent(s);
 		req.setAttribute("dto", dto);
 		req.setAttribute("mode", "reply");
 		req.setAttribute("page", page);
-		req.setAttribute("rows", rows);
 		forward(req, resp, "/WEB-INF/views/board/created.jsp");
 		
 	}
@@ -247,11 +236,6 @@ public class BoardServlet extends MyServlet{
 	{
 		BoardDAO dao = new BoardDAO();
 		String cp = req.getContextPath();
-		if(info==null)
-		{//로그인 안됐을때
-			forward(req, resp,"/WEB-INF/views/member/login.jsp");
-			return;
-		}
 		//subject,content,groupNum(아버지),orderNo(아버지),Depth(아버지)
 		//parent(아버지의 boardNum)
 		//rows,page
@@ -266,27 +250,19 @@ public class BoardServlet extends MyServlet{
 		dto.setUserId(info.getUserId());
 		
 		String page = req.getParameter("page");
-		String rows = req.getParameter("rows");
 		
 		dao.insertBoard(dto, "reply");
-		resp.sendRedirect(cp+"/board/list.do?page="+page+"&rows="+rows);
+		resp.sendRedirect(cp+"/board/list.do?page="+page);
 		
 		
 	}
 	private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		if(info==null)
-		{//로그인 안됐을때
-			forward(req, resp,"/WEB-INF/views/member/login.jsp");
-			return;
-		}
 		int boardNum = Integer.parseInt(req.getParameter("boardNum"));
 		String page = req.getParameter("page");
-		String rows = req.getParameter("rows");
 		req.setAttribute("mode", "update");
 		req.setAttribute("boardNum", boardNum);
 		req.setAttribute("page", page);
-		req.setAttribute("rows", rows);
 		forward(req, resp, "/WEB-INF/views/board/created.jsp");
 	}
 		
@@ -295,41 +271,29 @@ public class BoardServlet extends MyServlet{
 	{
 		BoardDAO dao = new BoardDAO();
 		String cp = req.getContextPath();
-		if(info==null)
-		{//로그인 안됐을때
-			forward(req, resp,"/WEB-INF/views/member/login.jsp");
-			return;
-		}
 		BoardDTO dto = new BoardDTO();
 		dto.setBoardNum(Integer.parseInt(req.getParameter("boardNum")));
 		dto.setSubject(req.getParameter("subject"));
 		dto.setContent(req.getParameter("content"));
 		String page = req.getParameter("page");
-		String rows = req.getParameter("rows");
 		dao.updateBoard(dto);
-		resp.sendRedirect(cp+"/board/list.do?page="+page+"&rows="+rows);
+		resp.sendRedirect(cp+"/board/list.do?page="+page);
 		
 	}
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
 		BoardDAO dao = new BoardDAO();
 		String cp = req.getContextPath();
-		if(info==null)
-		{//로그인 안됐을때
-			forward(req, resp,"/WEB-INF/views/member/login.jsp");
-			return;
-		}
 		int boardNum = Integer.parseInt(req.getParameter("boardNum"));
 		String page = req.getParameter("page");
-		String rows = req.getParameter("rows");
-		
+
 		BoardDTO dto = dao.readBoard(boardNum);
 		if(dto!=null&&(info.getUserId().equals("admin")||dto.getUserId().equals(info.getUserId())))
 		{
 			dao.deleteBoard(boardNum);
 			
 		}
-		resp.sendRedirect(cp+"/board/list.do?page="+page+"&rows="+rows);
+		resp.sendRedirect(cp+"/board/list.do?page="+page);
 		
 	}
 	

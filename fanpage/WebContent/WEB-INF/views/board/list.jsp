@@ -54,6 +54,19 @@
 </style>
 <script type="text/javascript"
 	src="<%=cp%>/res/jquery/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+function searchList() {
+		var f=document.searchForm;
+		f.action="<%=cp%>/board/list.do";
+		f.submit();
+}
+function selectList(){
+	var f = document.selectListForm;
+	f.submit();
+}
+
+</script>
+
 
 </head>
 <body>
@@ -66,7 +79,7 @@
 
 	<div class="container" role="main">
 		<div style="margin: 10px;">
-			<form name="searchForm" method="post" class="form-inline">
+			<form name="selectListForm" method="post" class="form-inline">
 				<select class="form-control input-sm" name="sort">
 					<option value="#">번호순</option>
 					<option value="#">인기순</option>
@@ -91,12 +104,12 @@
 				<c:forEach var="dto" items="${list}">
 					<tr>
 						<td class="text-center">${dto.listNum}</td>
-						<td><c:if test="${dto.depth>0 }">
+						<td class="text-center"><c:if test="${dto.depth>0 }">
 								<c:forEach var="i" begin="1" end="${dto.depth}">
 	                        		&nbsp;&nbsp;
 	                        		</c:forEach>
 								<img src="<%=cp%>/res/images/re.gif">
-							</c:if> <a href="${articleUrl}&boardNum=${dto.boardNum}">${dto.subject}</a></td>
+							</c:if> <a href="${articleUrl}&boardNum=${dto.boardNum}" >${dto.subject}</a></td>
 						<td class="text-center">${dto.userName}</td>
 						<td class="text-center">${dto.created}</td>
 						<td class="text-center">${dto.hitCount}</td>

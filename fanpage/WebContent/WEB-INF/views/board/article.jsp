@@ -43,13 +43,13 @@
 		<td colspan="3" style = "width:100%; text-align:center">${dto.subject}</td>
 		</tr>
 		<tr>
-		<td style = "width:20%;">이름:헤헤</td>
+		<td style = "width:20%;">이름:${dto.userName}</td>
 		<td style = "width:60%"></td>
-		<td style = "width:20%; text-align:right">날짜:2016.6.5 | 조회수:10</td>
+		<td style = "width:20%; text-align:right">날짜:${dto.created} | 조회수:${dto.hitCount}</td>
 		</tr>
 		
 		<tr>
-		<td colspan = "3" style = "height:400px;">헤헤헤</td>
+		<td colspan = "3" style = "height:400px;">${dto.content}</td>
 		<tr>
 		
 		

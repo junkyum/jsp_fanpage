@@ -436,5 +436,20 @@ public class BoardDAO {
 			}
 			return result;
 	    }
+	 public int updateHitCount(int boardNum){
+			int result=0;
+			PreparedStatement pstmt = null;
+			String sql;
+			try {
+				sql ="UPDATE board set hitCount = hitCount+1 where boardnum=?";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, boardNum);
+				result=pstmt.executeUpdate();
+				pstmt.close();
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			}
+			return result;
+		}
 	 
 }

@@ -46,7 +46,7 @@
 			작성자명
 			</td>
 			<td style = "width: 80%; background: darkgrey; color: white; border:1px solid #ccc;" class="text-center">
-			준겸
+		   	${sessionScope.member.userName}
 			</td>
 			<tr>
 			<td style = "width: 20%; border:1px solid #ccc;" class="text-center" >

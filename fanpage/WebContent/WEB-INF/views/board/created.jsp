@@ -35,7 +35,7 @@
     <div class="bodyFrame">
    		<div class="page-header" style = "text-align:center;">
   		<h1>새로운 글</h1>
-  		<small>회원들과 새로운 정보를 나누세요</small>
+  		<small>회원들과 새로운 정보를 나누세요!</small>
 		</div>
    		
    		<div >

@@ -45,7 +45,7 @@
 			<td style = "width: 20%; background: darkgrey; color: white; border:1px solid #ccc;" class="text-center" >
 			작성자명
 			</td>
-			<td style = "width: 80%; background: darkgrey; color: white; border:1px solid #ccc;">
+			<td style = "width: 80%; background: darkgrey; color: white; border:1px solid #ccc;" class="text-center">
 			준겸
 			</td>
 			<tr>

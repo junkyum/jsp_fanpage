@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
-   String cp = request.getContextPath();
+	String cp = request.getContextPath();
 %>
 
 <!DOCTYPE html>
@@ -91,25 +91,31 @@
 		return true;
 		
   }
-		
-/* 		if(mode=="created"||mode=="update" && f.upload.value!="") {
-  		if(! /(\.gif|\.jpg|\.png|\.jpeg|\.txt|\.hwp)$/i.test(f.upload.value)) {
-  			alert('이미지 파일만 가능합니다. !!!');
-  			f.upload.focus();
-  			return false;
-  		}
-  	  } 
-		
-	}
   
-  function imageViewer(img) {
-		var preViewer = $("#imageViewModal .modal-body");
-		var s="<img src='"+img+"' width='570' height='450'>";
-		preViewer.html(s);
-	  
-		$('#imageViewModal').modal('show');
-} */
+  <c:if test="${mode=='update'}">
+  	function deleteFile(num){
+  		var url ="<%=cp%>/notice/deleteFile.do?num=" + num + "&page=${page}";
+		location.href = url;
+	}
+	</c:if>
 
+	/* 		if(mode=="created"||mode=="update" && f.upload.value!="") {
+	 if(! /(\.gif|\.jpg|\.png|\.jpeg|\.txt|\.hwp)$/i.test(f.upload.value)) {
+	 alert('이미지 파일만 가능합니다. !!!');
+	 f.upload.focus();
+	 return false;
+	 }
+	 } 
+	
+	 }
+	
+	 function imageViewer(img) {
+	 var preViewer = $("#imageViewModal .modal-body");
+	 var s="<img src='"+img+"' width='570' height='450'>";
+	 preViewer.html(s);
+	
+	 $('#imageViewModal').modal('show');
+	 } */
 </script>
 
 </head>
@@ -122,12 +128,11 @@
 
 		<div class="container">
 			<div class="body-title">
-				<h3><span class="glyphicon glyphicon-book"></span> 공지사항 </h3>
+				<img src="<%=cp%>/res/images/notice_btn.gif" 
+				 onclick="javascript:location.href='<%=cp%>/notice/list.do';"></div>   
 			</div>
 
-			<div class="alert alert-info">
-				<i class="glyphicon glyphicon-info-sign"></i> 공지사항입니당
-			</div>
+			
 
 			<div style="width: 600px; margin: 10px auto; margin-top: 30px;">
 				<form name="noticeForm" method="post" onsubmit="return check();"
@@ -149,7 +154,7 @@
 									<td width="250" style="text-align: center;">공지여부</td>
 									<td width="350" style="padding-left: 10px;"><input
 										type="checkbox" name="notice" value="1"
-										${dto.notice==1 ? "checked='checked' ":"" }> 공지</td>
+										${dto.notice==1 ? "checked=='checked' ":"" }> 공지</td>
 								</tr>
 
 								<tr align="left">
@@ -167,17 +172,16 @@
 										type="file" name="upload" class="boxTF" size="61"
 										style="height: 20px;"></td>
 								</tr>
-
-<%-- 								<c:if test="${mode=='update'}">
+									<c:if test="${mode=='update'}">
 									<tr align="left" height="40">
 										<td width="100" style="text-align: center;">첨부된파일</td>
 										<td width="500" style="padding-left: 10px;"><c:if
-												test="${not empty dto.saveFilename}">
-								   ${dto.originalFilename}
+												test="${not empty dto.savefileName}">
+								   ${dto.originalfileName}
 								   | <a href="javascript:deleteFile('${dto.num}');">삭제</a>
 											</c:if></td>
 									</tr>
-								</c:if> --%>
+								</c:if>
 							</tbody>
 							<tfoot>
 								<tr>
@@ -187,12 +191,10 @@
 										</button>
 										<button type="button" class="btn btn-danger"
 											onclick="javascript:location.href='<%=cp%>/notice/list.do';">
-											취소</button>
-											
-										<c:if test="${mode=='update'}">
+											취소</button> <c:if test="${mode=='update'}">
 											<input type="hidden" name="num" value="${dto.num}">
-											<input type="hidden" name="saveFilename"
-												value="${dto.saveFilename}">
+											<input type="hidden" name="savefileName"
+												value="${dto.savefileName}">
 											<input type="hidden" name="page" value="${page}">
 										</c:if>
 									</td>

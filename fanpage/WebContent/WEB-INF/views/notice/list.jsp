@@ -34,7 +34,8 @@
 <div class="container" role="main">
     <div class="bodyFrame">
         <div class="body-title">
-          <h3><span class="glyphicon glyphicon-tower"></span> 공지사항 <small>트와이스의 소식을 알려드립니다.</small></h3></div>
+          <img src="<%=cp%>/res/images/notice_btn.gif" 
+          onclick="javascript:location.href='<%=cp%>/notice/list.do';"></div>
         
     
         <div>
@@ -73,12 +74,13 @@
 	    </div>  
 	    <div style="clear: both;">
 	        		<div style="float: left; width: 20%; min-width: 85px;">
-	        		    <button type="button" class="btn btn-default btn-sm wbtn" onclick="javascript:location.href='<%=cp%>/board/list.do';">새로고침</button>
+	        		    <button type="button" class="btn btn-default btn-sm wbtn" onclick="javascript:location.href='<%=cp%>/notice/list.do';">새로고침</button>
 	        		</div>
 	        		<div style="float: left; width: 60%; text-align: center;">
 	        		     <form name="searchForm" method="post" class="form-inline">
 							  <select class="form-control input-sm" name="searchKey" >
 							      <option value="subject">제목</option>
+							      <option value="userName">작성자</option>
 							      <option value="content">내용</option>
 							      <option value="created">등록일</option>
 							  </select>

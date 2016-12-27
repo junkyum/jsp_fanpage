@@ -32,19 +32,22 @@
 	src="<%=cp%>/res/jquery/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 function updateNotice(num) {
-	<c:if test="${sessionScope.member.userId==dto.userId}">
-	     var url="<%=cp%>/notice/update.do?num="+num+"&page=${page}";
-	     location.href=url;
-	</c:if>
+	
+	var url="<%=cp%>/notice/update.do?num="+num+"&page=${page}";
+    location.href=url;
+	//<c:if test="${sessionScope.member.userId=='admin'}">
+	     
+	//</c:if>
 }
 
 function deleteNotice(num) {
-	<c:if test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
-         if(confirm("게시물을 삭제 하시겠습니까 ?")) {
-        	 var url="<%=cp%>/notice/delete.do?num="+num+"&page=${page}";
-        	 location.href=url;
-         }	
-	</c:if>
+	 if(confirm("게시물을 삭제 하시겠습니까 ?")) {
+    	 var url="<%=cp%>/notice/delete.do?num="+num+"&page=${page}";
+    	 location.href=url;
+     }
+	//<c:if test="${sessionScope.member.userId=='admin'}">
+        	
+	//</c:if>
 }
  function download() {
 	  if(confirm("다운로드? ?")) {
@@ -62,22 +65,18 @@ function deleteNotice(num) {
 			style="float: none; margin-left: auto; margin-right: auto;">
 
 			<div class="body-title">
-				<h3>
-					<span class="glyphicon glyphicon-picture"></span> 공지사항
-				</h3>
+				 <img src="<%=cp%>/res/images/notice_btn.gif" 
+				 onclick="javascript:location.href='<%=cp%>/notice/list.do';"></div>        
 			</div>
 
-			<div class="alert alert-info">
-				<i class="glyphicon glyphicon-info-sign"></i> 공지사항.
-			</div>
 
 			<div class="table-responsive" style="clear: both;" >
 				<div class="notice-article" >
-					<table class="table" >
+					<table class="table">
 						<thead>
 							<tr>
-								<th colspan="2" style="text-align: center;">제목:
-									${dto.subject}</th>
+								<th colspan="2" style="text-align: center;">
+								제목:	${dto.subject}</th>
 							</tr>
 						<thead>
 						<tbody >
@@ -98,8 +97,12 @@ function deleteNotice(num) {
 								<td colspan="2" style="min-height: 30px;">${dto.content}</td>
 							</tr>
 							<tr>
-								<td colspan="2" style="min-height: 30px;" >첨부파일 : <input
-									type="button" name="다운로드" value="다운로드" onclick="download();">
+								<td colspan="2" style="min-height: 30px;" >첨부파일 :
+								<c:if test="${not empty dto.savefileName }">
+									<a href="<%=cp%>/notice/download.do?num=${dto.num}">${dto.originalfileName }</a>
+									(<fmt:formatNumber value="${dto.fileSize/1024 }" pattern="0.00"/> KByte)
+								</c:if>
+								<!--  <input type="button" name="다운로드" value="다운로드" onclick="download();"> -->
 								</td>
 							</tr>
 
@@ -126,8 +129,6 @@ function deleteNotice(num) {
 			</div>
 
 		</div>
-	</div>
-
 	<div>
 		<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
 	</div>

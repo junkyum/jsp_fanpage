@@ -100,8 +100,8 @@ public class NoticeDAO {
 		try {
 			sb.append("select * from(");
 			sb.append("	select rownum rnum, tb.* from(");
-			sb.append("   select num, notice, subject, content, to_char(created, 'yyyy-mm-dd')created, hitCount");
-			sb.append("		, saveFilename from notice");
+			sb.append("   select num, notice, subject, content, to_char(created, 'yyyy-mm-dd')created, hitCount, savefilename");
+			sb.append("		from notice");
 			sb.append("		order by num desc");
 			sb.append("  )tb where rownum <=?");
 			sb.append(")where rnum >=?");
@@ -131,7 +131,7 @@ public class NoticeDAO {
 		return list;
 	}
 	
-	public List<NoticeDTO> listNotice(){
+	/*public List<NoticeDTO> listNotice(){
 		List<NoticeDTO>list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null; 
@@ -164,7 +164,7 @@ public class NoticeDAO {
 		}
 		
 		return list;
-	}
+	}*/
 	
 	public NoticeDTO readNotice(int num){
 		NoticeDTO dto = null;
@@ -173,7 +173,7 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = "select num, notice, subject, content, to_char(created,'yyyy-mm-dd') created, hitCount, savefilename, originalfilename";
+			sql = "select num, notice, subject, content, to_char(created,'yyyy-mm-dd') created, hitCount, savefilename, originalfilename, fileSize";
 			sql += " from notice where num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
@@ -189,6 +189,7 @@ public class NoticeDAO {
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setSavefileName(rs.getString("savefilename"));
 				dto.setOriginalfileName(rs.getString("originalfilename"));
+				dto.setFileSize(rs.getLong("fileSize"));
 			}
 			rs.close();
 			pstmt.close();
@@ -205,17 +206,23 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = "update notice set subject=?, content=? where num=? ";
+			sql = "update notice set notice=?, subject=?, content=?, ";
+			sql += "savefileName=?, originalFilename=?, fileSize=? where num=? ";
+			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getSubject());
-			pstmt.setString(2, dto.getContent());
-			pstmt.setInt(3, dto.getNum());
+			pstmt.setInt(1, dto.getNotice());
+			pstmt.setString(2, dto.getSubject());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setString(4, dto.getSavefileName());
+			pstmt.setString(5, dto.getOriginalfileName());
+			pstmt.setLong(6, dto.getFileSize());
+			pstmt.setInt(7, dto.getNum());
 			result = pstmt.executeUpdate();
+			
 			pstmt.close();			
 		} catch (Exception e) {
 			System.out.println(e.toString());
-		}
-		
+		}		
 		return result;
 	}
 	
@@ -229,6 +236,7 @@ public class NoticeDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			result = pstmt.executeUpdate();
+			
 			pstmt.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());

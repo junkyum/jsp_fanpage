@@ -27,7 +27,7 @@
 
 function check(){
 	var f=document.memberForm;
-		var kim;
+	var kim;
 	var chk;
 	var mode="${mode}";
 
@@ -83,14 +83,14 @@ function check(){
         return false;
     }
     
-    kim=f.userEmail.value;
+    kim = f.userEmail.value;
     if(kim.match(/[a-z0-9A-Z]+@[0-9A-Za-z]+(.[a-z]+)+/g)!=kim){
 		alert("Email 다시입력");
         f.userEmail.focus();
         return false;
 	} 
 
-    kim=f.myPhoto.value;
+    kim = f.myPhoto.value;
 	  if(mode=="created") {
 	  		if(! /(\.gif|\.jpg|\.png|\.jpeg)$/i.test(kim)) {
 	  			alert('이미지 파일만 가능합니다. !!!');
@@ -252,11 +252,9 @@ function check(){
 		  <div class="col-lg-6">
 		    <div class="input-group">
 	    	  <span class="input-group-addon">취미~~~~</span>
-		     
 		     	<input type="checkbox" name="userHobby" id="userHobby" value="축구" >축구
 		     	<input type="checkbox" name="userHobby" id="userHobby" value="야구">야구
 		     	<input type="checkbox" name="userHobby" id="userHobby" value="족구">족구
-
 		      <p class="help-block">  취미를  입력하세요 [선택사항]</p>
 			</div>
 		  </div>
@@ -267,9 +265,8 @@ function check(){
 		  <div class="col-lg-6">
 		    <div class="input-group">
 	    	  <span class="input-group-addon">사진줘</span>
-
-				<input type="file" name="myPhoto" id="myPhoto" class="form-control input-sm">	
-		      <p class="help-block">  사진등록</p>
+				<input type="file" name="myPhoto" id="myPhoto" class="form-control">	
+		      <p class="help-block">사진등록</p>
 			</div>
 		  </div>
 		</div>
@@ -301,27 +298,6 @@ function check(){
 		    </div>
 		  </div>
 		</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	</form>
         </div>

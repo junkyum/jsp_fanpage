@@ -18,7 +18,7 @@ import com.util.MyServlet;
 public class MemberServlet extends MyServlet{
 
 	private static final long serialVersionUID = 1L;
-	private String kimcheol;
+	private String pathname;
 	private SessionInfo info;
 	@Override
 	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -113,23 +113,22 @@ public class MemberServlet extends MyServlet{
 		
 			//////////////////////////////////////////////
 		HttpSession sesion = req.getSession();
-		info=(SessionInfo)sesion.getAttribute("member");
 		String root= sesion.getServletContext().getRealPath("/");
-		kimcheol=root+File.separator+"uploads"+File.separator+"myPhoto";
+		pathname=root+File.separator+"uploads"+File.separator+"myPhoto";
 	
-		File f= new File(kimcheol);
+		File f= new File(pathname);
 		if(!f.exists())
 			f.mkdirs();
 	
 			
-			String cp= req.getContextPath();
+		String cp= req.getContextPath();
 			
-			String encType="UTF-8";
-			int maxSize=5*1024*1024;
-			MultipartRequest mreq=new MultipartRequest(req, kimcheol, maxSize, encType, new DefaultFileRenamePolicy());
+		String encType="UTF-8";
+		int maxSize=5*1024*1024;
+		MultipartRequest mreq=new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
 			
-			String saveFile = mreq.getFilesystemName("myPhoto");
-			saveFile=FileManager.doFilerename(kimcheol, saveFile);
+		String saveFile = mreq.getFilesystemName("myPhoto");
+		saveFile=FileManager.doFilerename(pathname, saveFile);
 	
 		dto.setMyPhoto(saveFile);			
 		dto.setUserId(mreq.getParameter("userId"));
@@ -142,7 +141,6 @@ public class MemberServlet extends MyServlet{
 		String hobby=" ";
 
 		if(ss !=null ){
-			
 			for (int i = 0; i < ss.length; i++) {
 				hobby+=ss[i];
 			}

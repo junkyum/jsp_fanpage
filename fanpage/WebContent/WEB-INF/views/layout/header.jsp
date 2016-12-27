@@ -36,23 +36,10 @@
 							class="glyphicon glyphicon-user"></span>회원가입</a></li>
 				</c:if>
 				<c:if test="${not empty sessionScope.member}">
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown">내정보 <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="<%=cp%>/member/update.do">정보수정</a></li>
-							<li><script type="text/javascript">
-                               function dropUser() {
-                           var url="<%=cp%>/member/delete.do";
-                           if(confirm("탈퇴 가능?"))
-                              location.href=url;
-                        }
-                            
-                            </script> <a onclick="dropUser();">탈퇴</a></li>
-						</ul></li>
 					<li>
 						<%-- <a href="#"><span style="color:blue;">${sessionScope.member.userName}</span>준겸님</a> --%>
 						<button type="button" class="btn btn-danger navbar-btn dropdown-toggle"
-							data-toggle="modal" data-target=".bs-example-modal-sm">${sessionScope.member.userName}</button>
+							data-toggle="modal" data-target=".bs-example-modal-sm">${sessionScope.member.userName}의 정보보기</button>
 
 						<div class="modal fade bs-example-modal-sm" tabindex="-1"
 							role="dialog" aria-labelledby="mySmallModalLabel"
@@ -72,6 +59,19 @@
 							<a href="<%=cp%>/admin/main.do"> 관리자</a>
 						</c:if>
 					</li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">내정보 <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="<%=cp%>/member/update.do">정보수정</a></li>
+							<li><script type="text/javascript">
+                               function dropUser() {
+                           var url="<%=cp%>/member/delete.do";
+                           if(confirm("탈퇴 가능?"))
+                              location.href=url;
+                        }
+                            
+                            </script> <a onclick="dropUser();">탈퇴</a></li>
+						</ul></li>
 					<li><a href="<%=cp%>/member/logout.do"><span
 							class="glyphicon glyphicon-log-out"></span>로그아웃</a></li>
 				</c:if>

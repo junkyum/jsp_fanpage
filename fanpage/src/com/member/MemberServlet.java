@@ -81,9 +81,7 @@ public class MemberServlet extends MyServlet{
 
 		info.setUserId(dto.getUserId());
 		info.setUserName(dto.getUserName());
-		info.setUserPhone1(dto.getUserPhone1());
-		info.setUserPhone2(dto.getUserPhone2());
-		info.setUserPhone3(dto.getUserPhone3());
+		info.setUserPhone(dto.getUserPhone());
 		info.setUserEmail(dto.getUserEmail());
 		info.setUserBirth(dto.getUserBirth());
 		info.setUserHobby(dto.getUserHobby());

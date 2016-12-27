@@ -16,8 +16,8 @@ public class MemberDAO {
 		
 		try {
 			sb.append("INSERT INTO member (userId, userName, userPw, userPhone ");
-			sb.append("		,userEmail , userBirth, userHobby, myPhoto) ");
-			sb.append("		VALUES(?,?,?,?,?,?,?,?)");
+			sb.append("	,userEmail, userBirth, userHobby, myPhoto) ");
+			sb.append(" VALUES(?,?,?,?,?,?,?,?)");
 			pstmt=conn.prepareStatement(sb.toString());
 			
 			pstmt.setString(1,dto.getUserId());
@@ -27,11 +27,11 @@ public class MemberDAO {
 			pstmt.setString(5,dto.getUserEmail());
 			pstmt.setString(6,dto.getUserBirth());
 			pstmt.setString(7,dto.getUserHobby());
-			pstmt.setString(8, dto.getMyPhoto());
+			pstmt.setString(8,dto.getMyPhoto());
 			
 			result=pstmt.executeUpdate();
 			pstmt.close();
-			result=1;
+	
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -50,7 +50,7 @@ public class MemberDAO {
 			
 			sb.append("SELECT userId, userName, userPw, userPhone, ");
 			sb.append("		userEmail, TO_CHAR(userBirth, 'YYYY-MM-DD') userBirth ");
-			sb.append("			,userHobby FROM member WHERE userId=?");
+			sb.append("			,userHobby,myPhoto FROM member WHERE userId=?");
 			
 			pstmt= conn.prepareStatement(sb.toString());
 			pstmt.setString(1, userId);
@@ -66,6 +66,7 @@ public class MemberDAO {
 				dto.setUserEmail(rs.getString("userEmail"));
 				dto.setUserBirth(rs.getString("userBirth"));
 				dto.setUserHobby(rs.getString("userHobby"));
+				dto.setMyPhoto(rs.getString("myPhoto"));
 			}
 			rs.close();
 			pstmt.close();

@@ -51,6 +51,8 @@
 										    I D : ${member.userId}<br> NAME : ${member.userName}<br>
 											H.P : ${member.userPhone}<br> MAIL : ${member.userEmail}<br>
 											BIRTH : ${member.userBirth}<br> HOBBY : ${member.userHobby}<br>
+											사진<br>
+                                 			<img  src="<%=cp%>/uploads/myPhoto/${member.myPhoto}" style="width: 200px; height: 200px;">
 										</a>
 									</div>
 								</div>

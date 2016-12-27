@@ -5,8 +5,16 @@ public class SessionInfo {
 	private String userPhone, userPhone1,userPhone2,userPhone3;
 	private String userEmail,userBirth,created;
 	private String  userHobby;
+	private String  myPhoto;
 	
-	
+	public String getMyPhoto() {
+		return myPhoto;
+	}
+
+	public void setMyPhoto(String myPhoto) {
+		this.myPhoto = myPhoto;
+	}
+
 	public String getUserPhone() {
 		return userPhone;
 	}

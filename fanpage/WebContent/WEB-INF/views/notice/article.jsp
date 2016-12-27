@@ -67,7 +67,7 @@ function deleteNotice(num) {
 			<div class="body-title">
 				 <img src="<%=cp%>/res/images/notice_btn.gif" 
 				 onclick="javascript:location.href='<%=cp%>/notice/list.do';"></div>        
-			</div>
+			
 
 
 			<div class="table-responsive" style="clear: both;" >
@@ -102,7 +102,6 @@ function deleteNotice(num) {
 									<a href="<%=cp%>/notice/download.do?num=${dto.num}">${dto.originalfileName }</a>
 									(<fmt:formatNumber value="${dto.fileSize/1024 }" pattern="0.00"/> KByte)
 								</c:if>
-								<!--  <input type="button" name="다운로드" value="다운로드" onclick="download();"> -->
 								</td>
 							</tr>
 
@@ -110,12 +109,12 @@ function deleteNotice(num) {
 						<tfoot>
 							<tr>
 								<td>
-									<%-- <c:if test="${sessionScope.member.userId=='admin'}"> --%>
+									 <c:if test="${sessionScope.member.userId=='admin'}"> 
 									<button type="button" class="btn btn-default btn-sm wbtn"
-										onclick="updateNotice(${dto.num});">수정</button> <%--  </c:if> --%>
-									<%--  <c:if test="${sessionScope.member.userId=='admin'}">  --%>
+										onclick="updateNotice(${dto.num});">수정</button>   </c:if> 
+									  <c:if test="${sessionScope.member.userId=='admin'}">  
 									<button type="button" class="btn btn-default btn-sm wbtn"
-										onclick="deleteNotice(${dto.num});">삭제</button> <%--  </c:if> --%>
+										onclick="deleteNotice(${dto.num});">삭제</button>   </c:if> 
 								</td>
 								<td align="right">
 									<button type="button" class="btn btn-default btn-sm wbtn"
@@ -127,7 +126,7 @@ function deleteNotice(num) {
 					</table>
 				</div>
 			</div>
-
+</div>
 		</div>
 	<div>
 		<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>

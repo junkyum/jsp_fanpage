@@ -17,9 +17,10 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = "insert into notice(num,notice,subject,content,savefileName, originalFilename, filesize, userid) values(notice_seq.NextVAL,?,?,?,?,?,?,?)";
+			sql = "insert into notice(num,subject,content,savefileName, originalFilename, filesize, userid) values(?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dto.getNotice());
+			int num = maxNum()+1;
+			pstmt.setInt(1, num);
 			pstmt.setString(2, dto.getSubject());
 			pstmt.setString(3, dto.getContent());
 			pstmt.setString(4, dto.getSavefileName());
@@ -34,6 +35,28 @@ public class NoticeDAO {
 		return res;
 	}
 	
+	public int maxNum()
+	{
+		int result = 0;
+		PreparedStatement pstmt=null;
+		ResultSet rs = null;
+		String sql = null;
+		try {
+			sql = "select nvl(max(num),0) from notice";
+			pstmt=conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			while(rs.next())
+			{
+				result=rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			pstmt=null;
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return result;
+	}
 	public int dataCount(){
 		int result=0;
 		PreparedStatement pstmt = null;
@@ -41,7 +64,7 @@ public class NoticeDAO {
 		String sql; 
 		
 		try {
-			sql = "select count(*) from notice";
+			sql = "select NVL(count(*),0) from notice";
 			pstmt = conn.prepareStatement(sql);
 			
 			rs = pstmt.executeQuery();
@@ -56,6 +79,38 @@ public class NoticeDAO {
 		}
 		return result;
 	}
+	
+	public int dataCount(String searchKey, String searchValue){
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql ;
+		
+		try {
+			sql = "select count(*) from notice where ";
+			if(searchKey.equals("subject"))
+				sql += "subject like '%'||?||'%'";
+			else if(searchKey.equals("content"))
+				sql += "instr(content,?)>=1";
+			else if(searchKey.equals("created"))
+				sql += "to_char(created,'YYYY-MM-DD')=?";
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, searchValue);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				result = rs.getInt(1);
+			
+			rs.close();
+			pstmt.close();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		
+		return result;
+	}
+	
+	
 	
 	public int updateHitCount(int num){
 		int result=0;
@@ -84,7 +139,7 @@ public class NoticeDAO {
 		try {
 			sb.append("select * from(");
 			sb.append("	select rownum rnum, tb.* from(");
-			sb.append("   select num, notice, subject, content, to_char(created, 'yyyy-mm-dd')created, hitCount, savefilename");
+			sb.append("   select num, subject, content, to_char(created, 'YYYY-MM-DD')created, hitCount, savefilename");
 			sb.append("		from notice");
 			sb.append("		order by num desc");
 			sb.append("  )tb where rownum <=?");
@@ -97,7 +152,6 @@ public class NoticeDAO {
 			while(rs.next()){
 				NoticeDTO dto = new NoticeDTO();
 				dto.setNum(rs.getInt("num"));
-				dto.setNotice(rs.getInt("notice"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
 				dto.setCreated(rs.getString("created"));
@@ -115,40 +169,49 @@ public class NoticeDAO {
 		return list;
 	}
 	
-	/*public List<NoticeDTO> listNotice(){
-		List<NoticeDTO>list = new ArrayList<>();
+	public List<NoticeDTO> listNotice(int start, int end, String searchKey, String searchValue){
+		List<NoticeDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null; 
 		StringBuffer sb = new StringBuffer();
 		
 		try {
-			sb.append("select num, subject, content, saveFilename, hitCount, to_char(created,'yyyy-dd-mm') created ");
-			sb.append("from notice");
-			sb.append("where notice=1");
-			sb.append("order by num desc");
+			sb.append("select * from (select rownum rnum, tb.* from(");
+			sb.append("	select num, subject, content, to_char(created, 'YYYY-MM-DD') created, hitCount");
+			sb.append("		from notice ");
+			sb.append("		where ");
+			if(searchKey.equals("subject"))
+				sb.append("subject like '%'||?||'%'");
+			else if(searchKey.equals("content"))
+				sb.append("instr(content,?) >=1");
+			else if(searchKey.equals("created"))
+				sb.append("to_char(created,'YYYY-MM-DD') =?");
+			sb.append(" order by num desc)");
+			sb.append("tb where rownum <=?) where rnum >=? ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setString(1, searchValue);
+			pstmt.setInt(2, end);
+			pstmt.setInt(3, start);
 			rs = pstmt.executeQuery();
-			
 			while(rs.next()){
 				NoticeDTO dto = new NoticeDTO();
-				
 				dto.setNum(rs.getInt("num"));
 				dto.setSubject(rs.getString("subject"));
-				dto.setSavefileName(rs.getString("savefileName"));
-				dto.setHitCount(rs.getInt("hitCount"));
+				dto.setContent(rs.getString("content"));
 				dto.setCreated(rs.getString("created"));
+				dto.setHitCount(rs.getInt("hitCount"));
 				
 				list.add(dto);
 			}
-			rs.close();
-			pstmt.close();
+			rs.close(); 
+			pstmt.close();			
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			
 		}
 		
 		return list;
-	}*/
+	}
 	
 	public NoticeDTO readNotice(int num){
 		NoticeDTO dto = null;
@@ -157,7 +220,7 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = "select num, notice, subject, content, to_char(created,'yyyy-mm-dd') created, hitCount, savefilename, originalfilename, fileSize";
+			sql = "select num,subject, content, to_char(created,'YYYY-MM-DD') created, hitCount, savefilename, originalfilename, fileSize";
 			sql += " from notice where num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
@@ -166,7 +229,6 @@ public class NoticeDAO {
 			if(rs.next()){
 				dto = new NoticeDTO();
 				dto.setNum(rs.getInt("num"));
-				dto.setNotice(rs.getInt("notice"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
 				dto.setCreated(rs.getString("created"));
@@ -190,17 +252,16 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = "update notice set notice=?, subject=?, content=?, ";
+			sql = "update notice set subject=?, content=?, ";
 			sql += "savefileName=?, originalFilename=?, fileSize=? where num=? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dto.getNotice());
-			pstmt.setString(2, dto.getSubject());
-			pstmt.setString(3, dto.getContent());
-			pstmt.setString(4, dto.getSavefileName());
-			pstmt.setString(5, dto.getOriginalfileName());
-			pstmt.setLong(6, dto.getFileSize());
-			pstmt.setInt(7, dto.getNum());
+			pstmt.setString(1, dto.getSubject());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getSavefileName());
+			pstmt.setString(4, dto.getOriginalfileName());
+			pstmt.setLong(5, dto.getFileSize());
+			pstmt.setInt(6, dto.getNum());
 			result = pstmt.executeUpdate();
 			
 			pstmt.close();			

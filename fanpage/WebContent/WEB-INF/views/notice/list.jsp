@@ -23,10 +23,16 @@
 <link rel="stylesheet" href="<%=cp%>/res/css/layout/layout.css" type="text/css"/>
 
 <script type="text/javascript" src="<%=cp%>/res/jquery/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+function searchList() {
+	var f=document.searchForm;
+	f.action="<%=cp%>/notice/list.do";
+	f.submit();
+}
 
+</script>
 </head>
 <body>
-
 <div>
     <jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
 </div>
@@ -56,11 +62,8 @@
 							<a href="${articleUrl }&num=${dto.num}">${dto.subject }	&nbsp;
 							  <c:if test="${not empty dto.savefileName}">
 							  	<img src="<%=cp%>/res/images/disk.gif">
-							  </c:if>
-							  </a>
+							  </c:if></a>
 							</td>
-								<%-- <td class="text-center">${dto.num }</td>
-								<td class="text-center">${dto.subject }</td> --%>
 								<td class="text-center">${dto.created }</td>
 								<td class="text-center">${dto.hitCount }</td>
 							</tr>
@@ -74,24 +77,25 @@
 	    </div>  
 	    <div style="clear: both;">
 	        		<div style="float: left; width: 20%; min-width: 85px;">
-	        		    <button type="button" class="btn btn-default btn-sm wbtn" onclick="javascript:location.href='<%=cp%>/notice/list.do';">새로고침</button>
+	        		    <button type="button" class="btn btn-primary btn-sm bbtn" 
+	        		    onclick="javascript:location.href='<%=cp%>/notice/list.do';">새로고침</button>
 	        		</div>
 	        		<div style="float: left; width: 60%; text-align: center;">
 	        		     <form name="searchForm" method="post" class="form-inline">
 							  <select class="form-control input-sm" name="searchKey" >
 							      <option value="subject">제목</option>
-							      <option value="userName">작성자</option>
 							      <option value="content">내용</option>
 							      <option value="created">등록일</option>
 							  </select>
 							  <input type="text" class="form-control input-sm input-search" name="searchValue">
 							  <input type="hidden" name="rows" value="${rows }">
-							  <button type="button" class="btn btn-info btn-sm btn-search" onclick="searchList();"><span class="glyphicon glyphicon-search"></span> 검색</button>
+							  <button type="button" class="btn btn-primary btn-sm bbtn" onclick="searchList();"><span class="glyphicon glyphicon-search"></span>검색</button>
 	        		     </form>
 	        		</div>
+	        		<c:if test="${sessionScope.member.userId=='admin'}"> 
 	        		<div style="float: left; width: 20%; min-width: 85px; text-align: right;">
 	        		    <button type="button" class="btn btn-primary btn-sm bbtn" onclick="javascript:location.href='<%=cp%>/notice/created.do';"><span class="glyphicon glyphicon glyphicon-pencil"></span> 글쓰기</button>
-	        		</div>
+	        		</div></c:if>
 	        </div>
 	    
 	    

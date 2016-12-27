@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -25,7 +26,6 @@ import com.util.MyUtil;
 public class NoticeServlet extends MyServlet{
 	private static final long serialVersionUID = 1L;
 
-	private SessionInfo info;
 	private String pathname;
 
 	@Override
@@ -34,7 +34,7 @@ public class NoticeServlet extends MyServlet{
 		
 		String uri = req.getRequestURI();
 		HttpSession session = req.getSession();
-		info=(SessionInfo)session.getAttribute("member");
+		//SessionInfo info = (SessionInfo)session.getAttribute("member");
 
 		/*if(info==null){
 			resp.sendRedirect(cp+"/member/login.do");
@@ -93,13 +93,12 @@ public class NoticeServlet extends MyServlet{
 		int numPerPage = 6;
 		int dataCount, total_page;
 		
-	/*	if(searchValue.length()!=0){
+		if(searchValue.length()!=0){
 			dataCount = dao.dataCount(searchKey, searchValue);
-		}else */		
+		}else 		
 			dataCount=dao.dataCount();
 		
-		total_page = util.pageCount(numPerPage, dataCount);
-		
+		total_page = util.pageCount(numPerPage, dataCount);		
 		if(current_page>total_page)
 			current_page=total_page;
 		
@@ -107,28 +106,20 @@ public class NoticeServlet extends MyServlet{
 		int end = current_page*numPerPage;
 		
 		List<NoticeDTO> list;
-		//if(searchValue.length()==0)
-		list = dao.listNotice(start, end);
-		//else 
-			//list = dao.listNotice(start, end, searchKey, searchValue);
+		if(searchValue.length()==0)
+			list = dao.listNotice(start, end);
+		else 
+			list = dao.listNotice(start, end, searchKey, searchValue);
 		
-		//°øÁö ±Û --? 
-		/*List<NoticeDTO> listNotice = null;
-		listNotice = dao.listNotice();
-		Iterator<NoticeDTO> itNotice = listNotice.iterator();
-		while(itNotice.hasNext()){
-			NoticeDTO dto = itNotice.next();
-			dto.setCreated(dto.getCreated().substring(0,10));
-		}*/
-		
-/*		int listNum, n = 0;
+	
+		int listNum, n = 0;
 		Iterator<NoticeDTO> it = list.iterator();
 		while(it.hasNext()){
 			NoticeDTO dto = it.next();
 			listNum = dataCount-(start+n-1);
 			dto.setNum(listNum);
 			n++;
-		}*/
+		}
 				
 		String listUrl=cp+"/notice/list.do";
 		String articleUrl=cp+"/notice/article.do?page="+current_page;
@@ -147,6 +138,7 @@ public class NoticeServlet extends MyServlet{
 		req.setAttribute("articleUrl", articleUrl);
 		req.setAttribute("paging", paging);
 		req.setAttribute("searchKey", searchKey);
+		req.setAttribute("searchValue", searchValue);
 		
 		forward(req,resp,"/WEB-INF/views/notice/list.jsp");
 	}
@@ -163,12 +155,16 @@ public class NoticeServlet extends MyServlet{
 		int maxSize = 5*1024*1024;
 		MultipartRequest mreq = new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
 		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+
+		
 		//String saveFilename = mreq.getFilesystemName("upload");
 		//saveFilename = FileManager.doFilerename(pathname,saveFilename);
 				
 		NoticeDTO dto = new NoticeDTO();
 		NoticeDAO dao = new NoticeDAO();
-		dto.setUserId("asd");
+		dto.setUserId(info.getUserId());
 		dto.setSubject(mreq.getParameter("subject"));
 		dto.setContent(mreq.getParameter("content"));
 		if(mreq.getFile("upload")!=null){
@@ -226,14 +222,12 @@ public class NoticeServlet extends MyServlet{
 		int maxSize=5*1024*1024;
 		MultipartRequest mreq=new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
 		
-		
-		dto.setNum(Integer.parseInt(req.getParameter("num")));
-		dto.setNotice(Integer.parseInt(mreq.getParameter("notice")));
 		dto.setSubject(mreq.getParameter("subject"));
 		dto.setContent(mreq.getParameter("content"));
 		dto.setSavefileName(mreq.getParameter("savefileName"));
 		dto.setOriginalfileName(mreq.getParameter("originalfileName"));
 		dto.setFileSize(Long.parseLong(mreq.getParameter("fileSize")));
+		dto.setNum(Integer.parseInt(mreq.getParameter("num")));
 
 		if(mreq.getFile("upload")!=null){
 			FileManager.doFiledelete(pathname, mreq.getParameter("savefileName"));
@@ -288,18 +282,17 @@ public class NoticeServlet extends MyServlet{
 		req.setAttribute("page", page);
 		
 		req.setAttribute("mode", "update");
-		forward(req, resp, "WEB-INF/views/notice/created.jsp");
-		
+		forward(req, resp, "/WEB-INF/views/notice/created.jsp");
 	}
 	
 	private void download(HttpServletRequest req, HttpServletResponse resp)throws IOException, ServletException{
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		//HttpSession session = req.getSession();
+		// SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		NoticeDAO dao = new NoticeDAO();
 		String cp = req.getContextPath();
 		
-		/*if(inf0==null){
+		/*if(info==null){
 			resp.sendRedirect(cp+"/member/login.do");
 			return;
 		}*/

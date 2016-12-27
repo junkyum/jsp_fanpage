@@ -4,7 +4,7 @@ public class MemberDTO {
 	private String userId,userName, userPw;
 	private String userPhone, userPhone1,userPhone2,userPhone3;
 	private String userEmail,userBirth,created;
-	private String userHobby;
+	private String  userHobby;
 	private String myPhoto;
 	
 

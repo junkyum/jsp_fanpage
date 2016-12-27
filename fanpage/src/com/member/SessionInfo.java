@@ -7,6 +7,10 @@ public class SessionInfo {
 	private String  userHobby;
 	private String  myPhoto;
 	
+	
+	
+	
+	
 	public String getMyPhoto() {
 		return myPhoto;
 	}

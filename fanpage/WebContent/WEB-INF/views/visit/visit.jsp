@@ -235,10 +235,6 @@ function updateVisit(num)  {
 				<td colspan='2' height='50' valign="top"
 					style='white-space: pre; padding: 5px 10px 5px 10px;' align="left">${dto.content}</td>
 			</tr>
-			
-			<tr>
-				<td colspan='2' bgcolor='#41D9CD' height='1'></td>
-			</tr>
 		
 		</c:forEach>
 		

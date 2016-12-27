@@ -40,7 +40,7 @@ public class VisitServlet extends MyServlet{
 			delete(req, resp);
 		}
 		else if(uri.indexOf("update.do")!=-1) {
-			//update(req, resp);
+			update(req, resp);
 		}
 	}
 
@@ -100,7 +100,10 @@ public class VisitServlet extends MyServlet{
         
         dao.insertVisit(dto);
         
-        forward(req, resp, "/WEB-INF/views/visit/visit.jsp");
+        // forward(req, resp, "/WEB-INF/views/visit/visit.jsp");
+        // resp.sendRedirect("/WEB-INF/views/visit/visit.jsp");
+        
+        visit(req,resp);
 	}
 
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -115,15 +118,17 @@ public class VisitServlet extends MyServlet{
 	}
 
 	
-//	private void update(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-//
-//		int num =Integer.parseInt(req.getParameter("num"));
-//		String pageNum=req.getParameter("page");
-//
-//		dao.updateVisit(num);
-//
-//		forward(req, resp, "/WEB-INF/views/visit/visit.jsp?page="+pageNum);
-//
-//	}
+	private void update(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		
+		VisitDTO dto = new VisitDTO();
+		dto.setContent(req.getParameter("content"));
+		
+		String pageNum=req.getParameter("page");
+		
+		dao.updateVisit(dto);
+		
+		forward(req, resp, "/WEB-INF/views/visit/visit.jsp?page="+pageNum);
+
+	}
 
 }

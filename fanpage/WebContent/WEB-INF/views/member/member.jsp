@@ -31,6 +31,7 @@ function check(){
 	var chk;
 	var mode="${mode}";
 
+
 	kim=f.userId.value;
 	if(mode=="created"){
 		if(kim.match(/^[a-z]+[0-9a-zA-Z]{4,10}\w*/g)!=kim){
@@ -88,8 +89,15 @@ function check(){
         f.userEmail.focus();
         return false;
 	} 
-    
 
+    kim=f.myPhoto.value;
+	  if(mode=="created") {
+	  		if(! /(\.gif|\.jpg|\.png|\.jpeg)$/i.test(kim)) {
+	  			alert('이미지 파일만 가능합니다. !!!');
+	  			f.upload.focus();
+	  			return false;
+	  		}
+	  	  }
 
 	
 	if(mode=="created"){
@@ -119,7 +127,7 @@ function check(){
     <!--  ------------------------------>
         <div>
             	
-	<form name="memberForm" method="post" onsubmit="return check();" >
+	<form name="memberForm" method="post"  onsubmit="return check();" enctype="multipart/form-data">
 	
 		<div class="row" align="center">
 		  <div class="col-lg-6">
@@ -254,6 +262,17 @@ function check(){
 		  </div>
 		</div>
 
+		<br><br>
+		<div class="row">
+		  <div class="col-lg-6">
+		    <div class="input-group">
+	    	  <span class="input-group-addon">사진줘</span>
+
+				<input type="file" name="myPhoto" id="myPhoto" class="form-control input-sm">	
+		      <p class="help-block">  사진등록</p>
+			</div>
+		  </div>
+		</div>
 
 
 <!--------------------------------------------------------------------  -->

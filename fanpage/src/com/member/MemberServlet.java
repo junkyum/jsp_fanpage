@@ -1,5 +1,6 @@
 package com.member;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -9,17 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.util.FileManager;
 import com.util.MyServlet;
 @WebServlet("/member/*")
 public class MemberServlet extends MyServlet{
 
 	private static final long serialVersionUID = 1L;
-	//MemberDAO dao= new MemberDAO();
+	private String kimcheol;
+	private SessionInfo info;
 	@Override
 	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
-		//		 String cp= req.getContextPath();
+		String cp= req.getContextPath();
 		String uri= req.getRequestURI();//member
+		///////////////////////////////////////////////////////
+
 
 
 		if(uri.indexOf("login.do")!=-1) { login(req, resp); }
@@ -106,13 +113,34 @@ public class MemberServlet extends MyServlet{
 		MemberDAO dao= new MemberDAO();
 		int result=0;
 		
-		dto.setUserId(req.getParameter("userId"));
-		dto.setUserName(req.getParameter("userName"));
-		dto.setUserPw(req.getParameter("userPw"));
-		dto.setUserEmail(req.getParameter("userEmail"));
-		dto.setUserBirth(req.getParameter("userBirth"));
+			//////////////////////////////////////////////
+		HttpSession sesion = req.getSession();
+		info=(SessionInfo)sesion.getAttribute("member");
+		String root= sesion.getServletContext().getRealPath("/");
+		kimcheol=root+File.separator+"uploads"+File.separator+"myPhoto";
+	
+		File f= new File(kimcheol);
+		if(!f.exists())
+			f.mkdirs();
+	
+			
+			String cp= req.getContextPath();
+			
+			String encType="UTF-8";
+			int maxSize=5*1024*1024;
+			MultipartRequest mreq=new MultipartRequest(req, kimcheol, maxSize, encType, new DefaultFileRenamePolicy());
+			
+			String saveFile = mreq.getFilesystemName("myPhoto");
+			saveFile=FileManager.doFilerename(kimcheol, saveFile);
+	
+		dto.setMyPhoto(saveFile);			
+		dto.setUserId(mreq.getParameter("userId"));
+		dto.setUserName(mreq.getParameter("userName"));
+		dto.setUserPw(mreq.getParameter("userPw"));
+		dto.setUserEmail(mreq.getParameter("userEmail"));
+		dto.setUserBirth(mreq.getParameter("userBirth"));
 
-		String [] ss= req.getParameterValues("userHobby");
+		String [] ss= mreq.getParameterValues("userHobby");
 		String hobby=" ";
 
 		if(ss !=null ){
@@ -124,9 +152,9 @@ public class MemberServlet extends MyServlet{
 		
 		dto.setUserHobby(hobby);
 
-		String userPhone1=req.getParameter("userPhone1");
-		String userPhone2=req.getParameter("userPhone2");
-		String userPhone3=req.getParameter("userPhone3");
+		String userPhone1=mreq.getParameter("userPhone1");
+		String userPhone2=mreq.getParameter("userPhone2");
+		String userPhone3=mreq.getParameter("userPhone3");
 
 		if(userPhone1!=null && userPhone1.length() !=0 && userPhone2!=null && userPhone2.length() !=0 &&
 				userPhone3!=null && userPhone3.length() !=0 ){

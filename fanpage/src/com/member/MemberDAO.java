@@ -3,9 +3,6 @@ package com.member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-
-
 import com.util.DBConn;
 
 public class MemberDAO {
@@ -19,8 +16,8 @@ public class MemberDAO {
 		
 		try {
 			sb.append("INSERT INTO member (userId, userName, userPw, userPhone ");
-			sb.append("		,userEmail , userBirth, userHobby) ");
-			sb.append("		VALUES(?,?,?,?,?,?,?)");
+			sb.append("		,userEmail , userBirth, userHobby, myPhoto) ");
+			sb.append("		VALUES(?,?,?,?,?,?,?,?)");
 			pstmt=conn.prepareStatement(sb.toString());
 			
 			pstmt.setString(1,dto.getUserId());
@@ -30,6 +27,7 @@ public class MemberDAO {
 			pstmt.setString(5,dto.getUserEmail());
 			pstmt.setString(6,dto.getUserBirth());
 			pstmt.setString(7,dto.getUserHobby());
+			pstmt.setString(8, dto.getMyPhoto());
 			
 			result=pstmt.executeUpdate();
 			pstmt.close();

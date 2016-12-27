@@ -2,9 +2,9 @@ package com.notice;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,6 +18,7 @@ import com.notice.NoticeDAO;
 import com.notice.NoticeDTO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.util.FileManager;
 import com.util.MyServlet;
 import com.util.MyUtil;
 @WebServlet("/notice/*")
@@ -58,8 +59,12 @@ public class NoticeServlet extends MyServlet{
 			update_ok(req, resp);
 		}else if(uri.indexOf("delete.do")!=-1){
 			delete(req, resp);
+		}else if(uri.indexOf("deleteFile.do")!=-1){
+			deleteFile(req, resp);
 		}else if(uri.indexOf("article.do")!=-1){
 			article(req, resp);
+		}else if(uri.indexOf("download.do")!=-1){
+			download(req, resp);
 		}
 		
 		
@@ -108,13 +113,13 @@ public class NoticeServlet extends MyServlet{
 			//list = dao.listNotice(start, end, searchKey, searchValue);
 		
 		//공지 글 --? 
-		List<NoticeDTO> listNotice = null;
+		/*List<NoticeDTO> listNotice = null;
 		listNotice = dao.listNotice();
 		Iterator<NoticeDTO> itNotice = listNotice.iterator();
 		while(itNotice.hasNext()){
 			NoticeDTO dto = itNotice.next();
 			dto.setCreated(dto.getCreated().substring(0,10));
-		}
+		}*/
 		
 /*		int listNum, n = 0;
 		Iterator<NoticeDTO> it = list.iterator();
@@ -163,7 +168,7 @@ public class NoticeServlet extends MyServlet{
 				
 		NoticeDTO dto = new NoticeDTO();
 		NoticeDAO dao = new NoticeDAO();
-		
+		dto.setUserId("asd");
 		dto.setSubject(mreq.getParameter("subject"));
 		dto.setContent(mreq.getParameter("content"));
 		if(mreq.getFile("upload")!=null){
@@ -193,11 +198,20 @@ public class NoticeServlet extends MyServlet{
 	}
 	
 	private void update(HttpServletRequest req, HttpServletResponse resp)throws IOException, ServletException{
+		NoticeDAO dao=new NoticeDAO();
+		String cp=req.getContextPath();
+		
 		int num = Integer.parseInt(req.getParameter("num"));
 		String page = req.getParameter("page");
 		
+		NoticeDTO dto=dao.readNotice(num);
+		if(dto==null) {
+			resp.sendRedirect(cp+"/notice/list.do?page="+page);
+			return;
+		}
+		
 		req.setAttribute("mode", "update");
-		req.setAttribute("num", num);
+		req.setAttribute("dto", dto);
 		req.setAttribute("page", page);
 		forward(req, resp, "/WEB-INF/views/notice/created.jsp");
 	}
@@ -208,14 +222,31 @@ public class NoticeServlet extends MyServlet{
 		String cp = req.getContextPath();
 		String page = req.getParameter("page");
 		
+		String encType="utf-8";
+		int maxSize=5*1024*1024;
+		MultipartRequest mreq=new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
+		
+		
 		dto.setNum(Integer.parseInt(req.getParameter("num")));
-		dto.setSubject(req.getParameter("subject"));
-		dto.setContent(req.getParameter("content"));
+		dto.setNotice(Integer.parseInt(mreq.getParameter("notice")));
+		dto.setSubject(mreq.getParameter("subject"));
+		dto.setContent(mreq.getParameter("content"));
+		dto.setSavefileName(mreq.getParameter("savefileName"));
+		dto.setOriginalfileName(mreq.getParameter("originalfileName"));
+		dto.setFileSize(Long.parseLong(mreq.getParameter("fileSize")));
+
+		if(mreq.getFile("upload")!=null){
+			FileManager.doFiledelete(pathname, mreq.getParameter("savefileName"));
+			dto.setSavefileName(mreq.getFilesystemName("uploads"));
+	    	dto.setOriginalfileName(mreq.getOriginalFileName("uploads"));
+		    dto.setFileSize(mreq.getFile("uploads").length());
+		}
 		dao.updateNotice(dto);
 		resp.sendRedirect(cp+"/notice/list.do?page="+page);
 	}
 	
 	private void delete(HttpServletRequest req, HttpServletResponse resp)throws IOException, ServletException{
+		String cp = req.getContextPath();
 		NoticeDAO dao = new NoticeDAO();
 		NoticeDTO dto;
 		
@@ -226,5 +257,70 @@ public class NoticeServlet extends MyServlet{
 			dao.deleteNotice(num);
 		}*/
 		
+		if(dto.getSavefileName()!=null && dto.getSavefileName().length()!=0){
+			FileManager.doFiledelete(pathname, dto.getSavefileName());
+		}
+		dao.deleteNotice(num);
+		resp.sendRedirect(cp+"/notice/list.do?page="+page);
 	}
+	
+	private void deleteFile(HttpServletRequest req, HttpServletResponse resp)throws IOException, ServletException{
+		NoticeDAO dao = new NoticeDAO();
+		NoticeDTO dto;
+		String cp = req.getContextPath();
+		int num = Integer.parseInt(req.getParameter("num"));
+		String page = req.getParameter("page");
+		
+		dto = dao.readNotice(num);
+		if(dto==null){
+			resp.sendRedirect(cp+"/notice/list.do?page="+page);
+			return;
+		}
+		
+		FileManager.doFiledelete(pathname, dto.getSavefileName());
+		dto.setSavefileName("");
+		dto.setOriginalfileName("");
+		dto.setFileSize(0);
+		
+		dao.updateNotice(dto);
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("page", page);
+		
+		req.setAttribute("mode", "update");
+		forward(req, resp, "WEB-INF/views/notice/created.jsp");
+		
+	}
+	
+	private void download(HttpServletRequest req, HttpServletResponse resp)throws IOException, ServletException{
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		NoticeDAO dao = new NoticeDAO();
+		String cp = req.getContextPath();
+		
+		/*if(inf0==null){
+			resp.sendRedirect(cp+"/member/login.do");
+			return;
+		}*/
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String page = req.getParameter("page");
+		
+		NoticeDTO dto = dao.readNotice(num);
+		if(dto==null){
+			resp.sendRedirect(cp+"/notice/list.do"+page);
+			return;
+		}
+		
+		boolean upfile = FileManager.doFiledownload(dto.getSavefileName(), dto.getOriginalfileName(), pathname, resp);
+		
+		if(! upfile){
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter pw = resp.getWriter();
+			pw.print("<script>alter('파일 다운로드 실패');history.back();</script>");
+			return;
+		}
+	}
+	
 }

@@ -51,7 +51,7 @@
 						</ul></li>
 					<li>
 						<%-- <a href="#"><span style="color:blue;">${sessionScope.member.userName}</span>준겸님</a> --%>
-						<button type="button" class="btn btn-danger dropdown-toggle"
+						<button type="button" class="btn btn-danger navbar-btn dropdown-toggle"
 							data-toggle="modal" data-target=".bs-example-modal-sm">${sessionScope.member.userName}</button>
 
 						<div class="modal fade bs-example-modal-sm" tabindex="-1"
@@ -60,10 +60,10 @@
 							<div class="modal-dialog modal-sm">
 								<div class="modal-content">
 									<div class="list-group">
-										<a class="list-group-item active"> <B>나의 정보</B><br> I
-											D : ${member.userId}<br> 이 름 : ${member.userName}<br>
-											H.P : ${member.userPhone}<br> E.M : ${member.userEmail}<br>
-											BIR : ${member.userBirth}<br> HOB : ${member.userHobby}<br>
+										<a class="list-group-item active"> <B>나의 정보</B><br> 
+										    I D : ${member.userId}<br> NAME : ${member.userName}<br>
+											H.P : ${member.userPhone}<br> MAIL : ${member.userEmail}<br>
+											BIRTH : ${member.userBirth}<br> HOBBY : ${member.userHobby}<br>
 										</a>
 									</div>
 								</div>

@@ -30,7 +30,7 @@
 
 <script type="text/javascript"
 	src="<%=cp%>/res/jquery/js/jquery-1.12.4.min.js"></script>
-
+<script type="text/javascript">
 <c:if test="${sessionScope.member.userId=='admin'||sessionScope.member.userId==dto.userId}">
 function deleteBoard(num)
 {
@@ -41,6 +41,7 @@ function deleteBoard(num)
 		}
 }
 </c:if>
+</script>
 </head>
 <body>
 

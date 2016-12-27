@@ -17,7 +17,7 @@ public class NoticeDAO {
 		String sql;
 		
 		try {
-			sql = "insert into notice(num,notice,subject,content,savefileName, originalFilename, filesize) values(notice_seq.NextVAL,?,?,?,?,?,?)";
+			sql = "insert into notice(num,notice,subject,content,savefileName, originalFilename, filesize, userid) values(notice_seq.NextVAL,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getNotice());
 			pstmt.setString(2, dto.getSubject());
@@ -25,7 +25,7 @@ public class NoticeDAO {
 			pstmt.setString(4, dto.getSavefileName());
 			pstmt.setString(5, dto.getOriginalfileName());
 			pstmt.setLong(6, dto.getFileSize());
-			
+			pstmt.setString(7, dto.getUserId());
 			res = pstmt.executeUpdate();
 			pstmt.close();
 		} catch (Exception e) {
@@ -56,22 +56,6 @@ public class NoticeDAO {
 		}
 		return result;
 	}
-	
-/*	public int dataCount(String searchKey, String searchValue){
-		int result=0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql;
-		
-		try {
-			sql = "";
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
-		
-		return result;
-	}*/
-	
 	
 	public int updateHitCount(int num){
 		int result=0;

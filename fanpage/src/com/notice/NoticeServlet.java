@@ -168,7 +168,7 @@ public class NoticeServlet extends MyServlet{
 				
 		NoticeDTO dto = new NoticeDTO();
 		NoticeDAO dao = new NoticeDAO();
-		
+		dto.setUserId("asd");
 		dto.setSubject(mreq.getParameter("subject"));
 		dto.setContent(mreq.getParameter("content"));
 		if(mreq.getFile("upload")!=null){

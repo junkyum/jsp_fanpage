@@ -86,12 +86,21 @@ public class VisitServlet extends MyServlet{
 		forward(req, resp, "/WEB-INF/views/visit/visit.jsp");
 	}
 	private void visit_ok(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		int num =Integer.parseInt(req.getParameter("num"));
-		String pageNum=req.getParameter("page");
-
-		dao.deleteVisit(num);
-
-		forward(req, resp, "/WEB-INF/views/visit/visit.jsp?page="+pageNum);
+		VisitDTO dto = new VisitDTO();
+        if(info==null) {
+           dto.setUserId("guest");
+           dto.setUserName("guest");
+        }
+        else {
+           dto.setUserId(info.getUserId());
+           dto.setUserName(info.getUserName());
+        }
+     
+        dto.setContent(req.getParameter("content"));
+        
+        dao.insertVisit(dto);
+        
+        forward(req, resp, "/WEB-INF/views/visit/visit.jsp");
 	}
 
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

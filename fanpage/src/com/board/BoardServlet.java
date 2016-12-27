@@ -95,7 +95,11 @@ public class BoardServlet extends MyServlet{
 			searchValue=URLDecoder.decode(
 					searchValue, "UTF-8");
 		}
-
+		String order=req.getParameter("sort");
+		String current_order="";
+		if(order!=null)
+			current_order=order;
+	
 		int numPerPage=10;
 		
 		int dataCount, total_page;
@@ -113,9 +117,9 @@ public class BoardServlet extends MyServlet{
 		int end=current_page*numPerPage;
 		List<BoardDTO> list;
 		if(searchValue.length()==0)
-			list=dao.listBoard(start, end);
+			list=dao.listBoard(start, end, current_order);
 		else
-			list=dao.listBoard(start, end, searchKey, searchValue);
+			list=dao.listBoard(start, end, searchKey, searchValue, current_order);
 
 		int listNum, n=0;
 		Iterator<BoardDTO> it=list.iterator();

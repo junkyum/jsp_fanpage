@@ -57,9 +57,7 @@
 									</div>
 								</div>
 							</div>
-						</div> <c:if test="${sessionScope.member.userId=='admin'}">
-							<a href="<%=cp%>/admin/main.do"> 관리자</a>
-						</c:if>
+						</div>
 					</li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">내정보 <b class="caret"></b></a>
@@ -68,7 +66,7 @@
 							<li><script type="text/javascript">
                                function dropUser() {
                            var url="<%=cp%>/member/delete.do";
-                           if(confirm("탈퇴 가능?"))
+                           if(confirm("탈퇴하시겠습니까?"))
                               location.href=url;
                         }
                             

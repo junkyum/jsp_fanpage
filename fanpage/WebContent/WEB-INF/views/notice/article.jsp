@@ -89,8 +89,8 @@ function deleteNotice(num) {
 									src="<%=cp%>/uploads/notice/${dto.savefileName}"
 									style="max-width: 100%; height: auto; resize: both;"></td>
 							</tr> --%>
-							<tr>
-								<td colspan="2" style="min-height: 30px;">${dto.content}</td>
+							<tr >
+								<td colspan="2" style="height: 400px;">${dto.content}</td>
 							</tr>
 							<tr>
 								<td colspan="2" style="min-height: 30px;" >첨부파일 :

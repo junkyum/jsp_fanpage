@@ -117,27 +117,27 @@ public class VisitDAO {
 		return result;
 	}
 	
-	public int updateVisit(VisitDTO dto) {
-		 int result=0;
-         PreparedStatement pstmt = null;
-         String sql;
-         
-         try {
-            sql ="UPDATE visit SET content=? where num=?";
-            pstmt =conn.prepareStatement(sql);
-            
-            pstmt.setString(1, dto.getContent());
-            pstmt.setInt(2, dto.getNum());
-            
-            
-            result=pstmt.executeUpdate();
-            pstmt.close();
-            
-         } catch (Exception e) {
-            System.out.println(e.toString());
-         }
-         return result;
-	}
+//	public int updateVisit(VisitDTO dto) {
+//		 int result=0;
+//         PreparedStatement pstmt = null;
+//         String sql;
+//         
+//         try {
+//            sql ="UPDATE visit SET content=? where num=?";
+//            pstmt =conn.prepareStatement(sql);
+//            
+//            pstmt.setString(1, dto.getContent());
+//            pstmt.setInt(2, dto.getNum());
+//            
+//            
+//            result=pstmt.executeUpdate();
+//            pstmt.close();
+//            
+//         } catch (Exception e) {
+//            System.out.println(e.toString());
+//         }
+//         return result;
+//	}
 	
 	
 }

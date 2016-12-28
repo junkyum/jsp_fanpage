@@ -39,9 +39,9 @@ public class VisitServlet extends MyServlet{
 		else if(uri.indexOf("delete.do")!=-1) {
 			delete(req, resp);
 		}
-		else if(uri.indexOf("update.do")!=-1) {
-			update(req, resp);
-		}
+//		else if(uri.indexOf("update.do")!=-1) {
+//			update(req, resp);
+//		}
 	}
 
 	private void visit(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -109,26 +109,24 @@ public class VisitServlet extends MyServlet{
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
 		int num =Integer.parseInt(req.getParameter("num"));
-		String pageNum=req.getParameter("page");
 
+		String page=req.getParameter("page");
+		
 		dao.deleteVisit(num);
 
-		forward(req, resp, "/WEB-INF/views/visit/visit.jsp?page="+pageNum);
-
+		
+		// resp.sendRedirect("/WEB-INF/views/visit/visit.do?page="+page);
+		visit(req,resp);		
+		// forward(req, resp, "/WEB-INF/views/visit/visit.do?page="+page);
 	}
 
 	
-	private void update(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		
-		VisitDTO dto = new VisitDTO();
-		dto.setContent(req.getParameter("content"));
-		
-		String pageNum=req.getParameter("page");
-		
-		dao.updateVisit(dto);
-		
-		forward(req, resp, "/WEB-INF/views/visit/visit.jsp?page="+pageNum);
-
-	}
+//	private void update(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+//		
+//		VisitDTO dto = new VisitDTO();
+//		dto.setContent(req.getParameter("content"));
+//		
+//		dao.updateVisit(dto);
+//	}
 
 }

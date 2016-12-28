@@ -22,6 +22,173 @@
 <link rel="stylesheet" href="<%=cp%>/res/css/layout/layout.css" type="text/css"/>
 
 <script type="text/javascript" src="<%=cp%>/res/jquery/js/jquery-1.12.4.min.js"></script>
+
+
+<style type="text/css">
+
+ 
+h1, h2, h3, h4, h5, h6, a {
+  margin:10px auto; padding:10;
+}
+.member-info {
+
+  margin:70px auto;
+  max-width:700px;
+ 
+
+}
+.member-header {
+  color:#f#f;
+  text-align:center;
+  font-size:300%;
+}
+.member-header h1 {
+   text-shadow: 0px 5px 15px #000;
+}
+.member-form {
+  border:2px solid #999;
+  background: white;/* 안에 공백색갈*/
+  border-radius:10px;
+  box-shadow:0px 0px 10px #000;
+}
+.member-form h3 {
+  text-align:center;
+  margin-left:40px;
+  color:#fff;
+}
+.member-form {
+  box-sizing:border-box;
+  padding-top:15px;
+  margin:50px auto;
+  text-align:center;
+	overflow: hidden;
+}
+
+.member-info  input[type="text"],
+.member-info  input[type="password"], 
+.member-info  input[type="email"],
+.member-info  input[type="file"],
+.member-info  input[type="hidden"]{
+  width: 100%;
+	max-width:400px;
+  height:30px;
+  font-family: 'Ubuntu', sans-serif;
+  margin:10px auto;
+  border-radius:5px;
+  border:2px solid #f2f2f2;
+  outline:none;
+  padding-left:10px;
+}
+.Phon{
+
+ 
+  max-width:400px;
+  height:30px;
+  font-family: 'Ubuntu', sans-serif;
+  margin:10px auto;
+  outline:none;
+  padding-left:40px; 
+
+}
+.mymy{
+  width: 100%;
+  max-width:400px;
+  height:30px;
+  font-family: 'Ubuntu', sans-serif;
+  margin:10px auto;
+  border-radius:5px;
+  border:2px solid #f2f2f2;
+  outline:none;
+  padding-left:10px;
+
+}
+
+.member-info  input[type="checkbox"]{
+  width: 100px;
+  max-width:100px;
+  height:30px;
+  font-family: 'Ubuntu', sans-serif;
+  margin:10px 0;
+  border-radius:5px;
+  border:2px solid #f2f2f2;
+  outline:none;
+  padding-left:10px;
+}
+
+
+.member-formm option{
+  width: 100%;
+	max-width:400px;
+  height:30px;
+  font-family: 'Ubuntu', sans-serif;
+  margin:10px 0;
+  border-radius:5px;
+  border:2px solid #f2f2f2;
+  outline:none;
+  padding-left:10px;
+}
+
+.member-formm button[type="button"]
+ {
+  height:30px;
+  width:100px;
+  background:#fff;
+  border:1px solid #f2f2f2;
+  border-radius:20px;
+  color: slategrey;
+  text-transform:uppercase;
+  font-family: 'Ubuntu', sans-serif;
+  cursor:pointer;
+}
+.member-formm button[type="submit"]
+ {
+  height:30px;
+  width:100px;
+  background:#fff;
+  border:1px solid #f2f2f2;
+  border-radius:20px;
+  color: slategrey;
+  text-transform:uppercase;
+  font-family: 'Ubuntu', sans-serif;
+  cursor:pointer;
+}
+.file{
+  height:30px;
+  width:100px;
+  background:#fff;
+  border:1px solid #f2f2f2;
+  border-radius:20px;
+  color: slategrey;
+  text-transform:uppercase;
+  font-family: 'Ubuntu', sans-serif;
+  cursor:pointer;
+}
+.no-access {
+  color:#E86850;
+  margin:20px 0px 20px auto;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
+/*Media Querie*/
+@media only screen and (min-width : 150px) and (max-width : 530px){
+  .member-form h3 {
+    text-align:center;
+    margin:0;
+  }
+  .btn btn-info {
+    margin-bottom:10px;
+  }
+  .btn btn-primary btn-lg {
+    margin-bottom:10px;
+  }
+}
+ 
+</style>
+
+
+
+
 <!-- DB로 가는 정보를 쏴주는 구간. -->
 <script type="text/javascript">
 
@@ -94,7 +261,7 @@ function check(){
 	  if(mode=="created") {
 	  		if(! /(\.gif|\.jpg|\.png|\.jpeg)$/i.test(kim)) {
 	  			alert('이미지 파일만 가능합니다. !!!');
-	  			f.upload.focus();
+	  			f.myPhoto.focus();
 	  			return false;
 	  		}
 	  	  }
@@ -119,81 +286,41 @@ function check(){
     <jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
 </div>
 
-<div class="container" role="main">
-    <div class="bodyFrame">
-        <div class="body-title">
-          <h3><span class="glyphicon glyphicon-tower"></span> 회원 가입 <small>아무나 오세요</small></h3>
-        </div>
-    <!--  ------------------------------>
-        <div>
+
             	
 	<form name="memberForm" method="post"  onsubmit="return check();" enctype="multipart/form-data">
-	
-		<div class="row" align="center">
-		  <div class="col-lg-6">
-		    <div class="input-group" style = "width:700px;" >
-		      <span class="input-group-addon" style = "width:150px; height:50px;">
-		        	아이디
-		      </span>
-
-		      <input type="text" placeholder="아이디는 5~10자 이내이며, 첫글자는 영문자로 시작해야 합니다." class="form-control" id="userId" name="userId" 
-		      value="${dto.userId}"${mode=="update" ? "readonly='readonly' style='width:550px; height:50px;'":""} style = "width:550px; height:50px;">
-		
-		     <!--  <p class="help-block">아이디는 5~10자 이내이며, 첫글자는 영문자로 시작해야 합니다.</p> -->
+		<div class="member-info">
+			<div class="member-header">
+		   		 <h1> ★ 회원 가입 ★ </h1>
+		  	</div>
+		  	
+		  	
+		  	
+		  	<div class="member-form">
+		  		 <h3>UserI.D</h3>
+		  		 <input type="text" placeholder="아이디는 5~10자 ,첫글자=>소문자 부터." class="form-control" id="userId" name="userId" 
+		      value="${dto.userId}"${mode=="update" ? "readonly='readonly' style='border:none;'":""}>
 		      
-		    </div>
-		  </div>
-		</div>
+		      		
+		  		 <h3>UserName</h3>
+		  		 <input type="text" placeholder="이름 입력해라" class="form-control" id="userName" name="userName" value="${dto.userName}">
+		  		 
+		  		 <h3>UserPW</h3>
+		  		 <input type="password" placeholder="P.W=> 5~10자 & 특수@숫자포함" class="form-control" id="userPw" name="userPw" >
+		  
+		  	
+					
+					
+		  		 <h3>userPwCheck</h3>
+		  		  <input type="password" placeholder="P.W다시 입력" class="form-control" id="userPwCheck" name="userPwdCheck" >
 		
-		<br><br>
-		<div class="row">
-		  <div class="col-lg-6" style = "width:700px;">
-		    <div class="input-group" style = "width:700px;">
-		      <span class="input-group-addon" style = "width:150px; height:50px;">
-		        	이 름
-		      </span>
-		      <input type="text" placeholder="이름 입력해주세요." class="form-control" id="userName" name="userName" value="${dto.userName}" style = "width:550px; height:50px;">
-		      <!-- <p class="help-block">이름 입력해주세요.</p> -->
-		    </div>
-		  </div>
-		</div>
+		  	
+		  	
 	
-		<br><br>
-		<div class="row">
-		  <div class="col-lg-6">
-		    <div class="input-group" style = "width:700px;">
-		      <span class="input-group-addon" style = "width:150px; height:50px;">
-		        	패스워드
-		      </span>
-		      <input type="password" placeholder="패스워드는 5~10자이며 하나 이상의 숫자나 특수문자가 포함되어야 합니다." class="form-control" id="userPw" name="userPw" style = "width:550px; height:50px;">
-		      <!-- <p class="help-block">패스워드는 5~10자이며 하나 이상의 숫자나 특수문자가 포함되어야 합니다.</p> -->
-		    </div>
-		  </div>
-		</div>
-
-		<br><br>
-		<div class="row">
-		  <div class="col-lg-6">
-		    <div class="input-group" style = "width:700px;">
-		      <span class="input-group-addon" style = "width:150px; height:50px;">
-		        	패스워드 확인
-		      </span>
-		      <input type="password" placeholder="패스워드를 한번 더 입력해주세요." class="form-control" id="userPwCheck" name="userPwdCheck" style = "width:550px; height:50px;">
-		      <!-- <p class="help-block">패스워드를 한번 더 입력해주세요.</p> -->
-		    </div>
-		  </div>
-		</div>
-
-
-
-		<br><br>
-		<div class="row">
-		  <div class="col-lg-6">
-		    <div class="input-group"  style = "width:700px;">
-		      <span class="input-group-addon" style = "width:150px; height:50px;">전화번호 </span>
-		      
-		      	<div class="col-sm-3" >
-		      	<select class="form-control" id="userPhone1" name="userPhone1" style = "width:120px; height:50px;">
+		  		<h3>userPhone</h3>
+		  		<div class="Phon">
+		  		<div class="col-sm-3" style="width: 100px; padding-left: 2px; padding-right: 5px">
+		      	<select class="mymy" id="userPhone1" name="userPhone1" >
 								<option value="">선 택</option>
 								<option value="010" ${dto.userPhone1=="010" ? "selected='selected'" : ""}>010</option>
 								<option value="011" ${dto.userPhone1=="011" ? "selected='selected'" : ""}>011</option>
@@ -203,116 +330,87 @@ function check(){
 								<option value="019" ${dto.userPhone1=="019" ? "selected='selected'" : ""}>019</option>
 				 </select>
 		      </div>
-		      <div class="col-lg-1" style="width: 10px; padding-left: 2px; padding-right: 5px">
-		      	 <p class="form-control-static">-</p>
-		      </div>
-		      <div class="col-lg-3" style="width: 100px; padding-left: 2px; padding-right: 5px">
-				 <input class="form-control" id="userPhone2" name="userPhone2" type="text"  maxlength="4" value="${dto.userPhone2}" style = "width:100px; height:50px;">	
-			  </div>
-			  <div class="col-lg-1" style="width: 10px; padding-left: 2px; padding-right: 5px">
-		      	 <p class="form-control-static">-</p>
-		      </div>
-		      <div class="col-lg-3" style="width: 100px; padding-left: 2px; padding-right: 5px">
-			<input class="form-control" id="userPhone3" name="userPhone3" type="text" maxlength="4"  value="${dto.userPhone3}" style = "width:100px; height:50px;">	
-			  </div>
-		      		
-		    </div>
-		  </div>
-		</div>
+			      
+			      <div class="col-lg-1" style="width: 10px; padding-left: 2px; padding-right: 5px">
+			      	 <p class="form-control-static">-</p>
+			      </div>
+			      
+			      <div class="col-lg-3" style="width: 100px; padding-left: 2px; padding-right: 5px">
+					 <input class="form-control" id="userPhone2" name="userPhone2" type="text"  maxlength="4" value="${dto.userPhone2}">	
+				  </div>
+				  
+				  <div class="col-lg-1" style="width: 10px; padding-left: 2px; padding-right: 5px">
+			      	 <p class="form-control-static">-</p>
+			      </div>
+			      
+			      <div class="col-lg-3" style="width: 100px; padding-left: 2px; padding-right: 5px">
+					<input class="form-control" id="userPhone3" name="userPhone3" type="text" maxlength="4"  value="${dto.userPhone3}">	
+				  </div>
+		  		</div>
+		  	 	<br>
+		   <h3>userEmail</h3>
+		  	  <input type="email" placeholder="이메일형식 => xxx@xxx.xx 입니다" class="form-control" id="userEmail" name="userEmail" value="${dto.userEmail}">
+		   
+		  	
+		  
 
-		<br><br>
-		<div class="row">
-		  <div class="col-lg-6">
-		    <div class="input-group" style = "width:700px;">
-		      <span class="input-group-addon"  style = "width:150px; height:50px;">
-		        	이메일
-		      </span>
-		      <input type="email" placeholder="이메일형식 => xxx@xxx.xx 입니다" class="form-control" id="userEmail" name="userEmail" value="${dto.userEmail}"  style = "width:550px; height:50px;">
-		     
-		    </div>
-		  </div>
-		</div>
+		  	<h3>userBirth</h3>
+		  		 <input type="text" placeholder="생년월일은 2000-01-01 형식" class="form-control" id="userBirth" name="userBirth" value="${dto.userBirth}" >
+		  	 
+		  	
+		  	
 
-		<br><br>
-		<div class="row">
-		  <div class="col-lg-6">
-		    <div class="input-group" style = "width:700px;">
-		      <span class="input-group-addon"  style = "width:150px; height:50px;">
-		        	생년월일
-		      </span>
-		      <input type="text" placeholder="생년월일은 2000-01-01 형식" class="form-control" id="userBirth" name="userBirth" value="${dto.userBirth}" style = "width:550px; height:50px;">
-		    
-		    </div>
-		  </div>
-		</div>
-
-
-		<br><br>
-		<div class="row">
-		  <div class="col-lg-6">
-		    <div class="input-group" style = "width:700px;">
-	    	  <span class="input-group-addon" style = "width:150px; height:50px; border">취미</span>
-		     	<input type="checkbox" name="userHobby" id="userHobby" value="축구">축구
-		     	<input type="checkbox" name="userHobby" id="userHobby" value="야구">야구
-		     	<input type="checkbox" name="userHobby" id="userHobby" value="족구">족구
-		      <p class="help-block">  취미를  입력하세요 [선택사항]</p>
-			</div>
-		  </div>
-		</div>
-
-		<br><br>
-		<div class="row">
-		  <div class="col-lg-6">
-		    <div class="input-group">
-	    	  <span class="input-group-addon" style = "width:150px;">회원사진</span>
-				<input type="file" name="myPhoto" id="myPhoto" class="form-control" style = "height:50px;">
+			
+		  		 <h3>userHobby</h3>
+			  		<input type="checkbox" name="userHobby" id="userHobby" value="쯔위">쯔위
+			     	<input type="checkbox" name="userHobby" id="userHobby" value="채영">채영
+			     	<input type="checkbox" name="userHobby" id="userHobby" value="다현">다현
+			  		<input type="checkbox" name="userHobby" id="userHobby" value="미나">미나
+			     	<input type="checkbox" name="userHobby" id="userHobby" value="지효">지효
+			     	<input type="checkbox" name="userHobby" id="userHobby" value="사나">사나			  		
+			     	<input type="checkbox" name="userHobby" id="userHobby" value="모모">모모
+			     	<input type="checkbox" name="userHobby" id="userHobby" value="정연">정연
+			     	<input type="checkbox" name="userHobby" id="userHobby" value="나연">나연
+		  		 <h4 class="no-access">누가 좋아</h4>
+		  	
+		  	
+		  
+				<input type="file" name="myPhoto" id="myPhoto" class="file">
+		      		<h3>myPhoto</h3>
 					<c:if test="${mode=='update'}">
 					<img  src="<%=cp%>/uploads/myPhoto/${dto.myPhoto}" style="width: 200px; height: 200px;">
 					<input type="hidden" value="${dto.myPhoto}" name="myPhoto">
 					<p class="help-block">등록된사진</p>
 					<input type="hidden" name="imgFile" value="${dto.myPhoto}">
 					</c:if>
-			</div>
-		  </div>
+		  			
+				
+				
+		  	<div class="member-formm">
+		  	
+				    <c:if test="${mode=='created'}">
+						<button type="submit" class="btn btn-info" name="sendB">회원가입</button>
+						<button type="button" class="btn btn-info" onclick="javascript:location.href='<%=cp%>/';">가입취소</button>
+					</c:if>
+					
+					<c:if test="${mode=='update'}">
+					
+						<button type="submit" class="btn btn-info" name="update">
+						정보수정</button>
+						<button type="button" class="btn btn-info" onclick="javascript:location.href='<%=cp%>/';">수정취소</button>			
+					
+					</c:if>
+		  	</div>
+		  	<br><br><br>
+		  	
+		  	
+		  	
+		  	</div>
 		</div>
-
-
-
-<!--------------------------------------------------------------------  -->
-		<!-- 버튼 만든ㄴ다. -->
-
-		<br><br>
-		
-		<div class="row" >
-		  <div class="col-lg-6">
-		    <div class="input-group">
-		    
-		    
-		    <c:if test="${mode=='created'}">
-				<button type="submit" class="btn btn-primary btn-lg" name="sendB">회원가입</button>
-				<button type="button" class="btn btn-info" onclick="javascript:location.href='<%=cp%>/';">가입취소</button>
-			</c:if>
-			
-			<c:if test="${mode=='update'}">
-			
-				<button type="submit" class="btn btn-primary btn-lg" name="update">
-				정보수정</button>
-				<button type="button" class="btn btn-info" onclick="javascript:location.href='<%=cp%>/';">수정취소</button>			
-			
-			</c:if>
-
-		    </div>
-		  </div>
-		</div>
-
 	</form>
-        </div>
         
         
-        <!-- ---------------- -->
-    </div>
-</div>
-
+        
 
 
 

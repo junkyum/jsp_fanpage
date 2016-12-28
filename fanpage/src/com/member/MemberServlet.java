@@ -146,7 +146,7 @@ public class MemberServlet extends MyServlet{
 
 		if(ss !=null ){
 			for (int i = 0; i < ss.length; i++) {
-				hobby+=ss[i];
+				hobby+=ss[i]+",";
 			}
 		}
 		

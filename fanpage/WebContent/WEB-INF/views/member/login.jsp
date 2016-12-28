@@ -24,40 +24,6 @@
 <script type="text/javascript" src="<%=cp%>/res/jquery/js/jquery-1.12.4.min.js"></script>
 <style type="text/css">
 
-/*  body {
-  background-color:#fff;
-  -webkit-font-smoothing: antialiased;
-  font: normal 14px Roboto,arial,sans-serif;
-}
-
-
-
-.form-login {
-    background-color: #EDEDED;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 15px;
-    padding-right: 20px;
-    border-radius: 15px;
-    border-color:#d2d2d2;
-    border-width: 5px;
-    box-shadow:0 1px 0 #cfcfcf;
-}
-
-h4 { 
- border:0 solid #fff; 
- border-bottom-width:1px;
- padding-bottom:10px;
- text-align: center;
-}
-
-.form-control {
-    border-radius: 10px;
-}
-
-.wrapper {
-    text-align: center;
-} */
 
  
 h1, h2, h3, h4, h5, h6, a {
@@ -97,8 +63,8 @@ h1, h2, h3, h4, h5, h6, a {
 }
 .login input[type="text"],
 .login input[type="password"] {
-  width: 100%;
-	max-width:400px;
+  width: 100%;/* 스크롤바 크기. */
+  max-width:400px;
   height:30px;
   font-family: 'Ubuntu', sans-serif;
   margin:10px 0;
@@ -117,12 +83,6 @@ h1, h2, h3, h4, h5, h6, a {
   text-transform:uppercase;
   font-family: 'Ubuntu', sans-serif;
   cursor:pointer;
-}
-.sign-up{
-  color:#f2f2f2;
-  margin-left:-400px;
-  cursor:pointer;
-  text-decoration:underline;
 }
 .no-access {
   color:#E86850;
@@ -150,12 +110,6 @@ h1, h2, h3, h4, h5, h6, a {
   }
 }
  
-
-
-
-
-
-
 </style>
 
 <script type="text/javascript">
@@ -198,13 +152,15 @@ h1, h2, h3, h4, h5, h6, a {
 
 <form name="loginForm" method="post">
 
+
 <div class="login">
+
   <div class="login-header">
     <h1>Login</h1>
   </div>
-  
+
   <div class="login-form">
-  
+
     <h3>UserI.D</h3>
     <input type="text" placeholder="userId" id="userId" name="userId"/><br>
     <h3>PassWord</h3>
@@ -213,24 +169,15 @@ h1, h2, h3, h4, h5, h6, a {
     <br>
     <input type="button" value="Login" class="login-button" onclick="login();"/>
     <!-- <button type="button" class="btn btn-primary btn-md" onclick="login();"> login <i class="fa fa-sign-in"></i></button> -->
-  
+    <h6 class="no-access">메에에에로로로로로롱~~~</h6>
   </div>
   
 </div>
 
 
-
-
 <div class="error-page">
   <div class="try-again"><div>${message}</div></div>
 </div>
-
-
-
-
-
-
-
 
 
 

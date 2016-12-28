@@ -18,7 +18,7 @@
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-middle">
-				<li><a href="#">소개</a></li>
+				<li><a href="<%=cp%>/board/introduce.do">소개</a></li>
 				<li><a href="<%=cp%>/notice/list.do">공지사항</a></li>
 				<li><a href="<%=cp%>/board/list.do">일반게시판</a></li>
 				<li><a href="<%=cp%>/photo/list.do">포토게시판</a></li>

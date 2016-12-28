@@ -37,41 +37,45 @@ public class BoardServlet extends MyServlet{
 			resp.sendRedirect(cp+"/member/login.do");
 			return;
 		}
-		if(uri.indexOf("list.do")!=-1) {
+		else if(uri.indexOf("list.do")!=-1) {
 			
 			list(req, resp);
 		}
-		if(uri.indexOf("created.do")!=-1) {
+		else if(uri.indexOf("created.do")!=-1) {
 			
 			created(req, resp);
 		}
-		if(uri.indexOf("created_ok.do")!=-1) {
+		else if(uri.indexOf("created_ok.do")!=-1) {
 			
 			created_ok(req, resp);
 		}
-		if(uri.indexOf("article.do")!=-1) {
+		else if(uri.indexOf("article.do")!=-1) {
 			
 			article(req, resp);
 		}
-		if(uri.indexOf("reply.do")!=-1) {
+		else if(uri.indexOf("reply.do")!=-1) {
 			
 			reply(req, resp);
 		}
-		if(uri.indexOf("reply_ok.do")!=-1) {
+		else if(uri.indexOf("reply_ok.do")!=-1) {
 			
 			reply_ok(req, resp);
 		}
-		if(uri.indexOf("update.do")!=-1) {
+		else if(uri.indexOf("update.do")!=-1) {
 			
 			update(req, resp);
 		}
-		if(uri.indexOf("update_ok.do")!=-1) {
+		else if(uri.indexOf("update_ok.do")!=-1) {
 			
 			update_ok(req, resp);
 		}
-		if(uri.indexOf("delete.do")!=-1) {
+		else if(uri.indexOf("delete.do")!=-1) {
 			
 			delete(req, resp);
+		}
+		else if(uri.indexOf("introduce.do")!=-1) {
+			
+			introduce(req, resp);
 		}
 	}
 
@@ -300,6 +304,9 @@ public class BoardServlet extends MyServlet{
 		resp.sendRedirect(cp+"/board/list.do?page="+page);
 		
 	}
-	
+	private void introduce(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+	{
+		forward(req, resp, "/WEB-INF/views/main/introduce.jsp");
+	}
 	
 }

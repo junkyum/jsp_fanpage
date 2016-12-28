@@ -89,6 +89,10 @@ function selectList(){
 			</form>
 
 		</div> -->
+		<div style ="margin-top: 10px;">
+		<img src="<%=cp%>/res/images/board.jpg">
+		<hr>
+		</div>
 		<div class="table-responsive" style="clear: both;margin: 10px;">
 			<table class="table table-hover">
 

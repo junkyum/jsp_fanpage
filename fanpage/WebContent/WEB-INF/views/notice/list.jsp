@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="<%=cp%>/res/css/layout/layout.css" type="text/css"/>
 
 <script type="text/javascript" src="<%=cp%>/res/jquery/js/jquery-1.12.4.min.js"></script>
+
 <script type="text/javascript">
 function searchList() {
 	var f=document.searchForm;
@@ -31,6 +32,30 @@ function searchList() {
 }
 
 </script>
+<style type="text/css">
+.table th, .table td {
+	font-weight: normal;
+	border-top: none;
+}
+
+.table thead tr th {
+	border-bottom: none;
+}
+
+.table thead tr {
+	border: #d5d5d5 solid 1px;
+	background: #4C4C4C;
+	color: white;
+}
+
+.table td {
+	border-bottom: #d5d5d5 solid 1px;
+}
+
+.table td a {
+	color: #000;
+}
+</style>
 </head>
 <body>
 <div>
@@ -49,10 +74,10 @@ function searchList() {
  			<table class="table">
 					<thead>
 						<tr>
-							<th class="text-center" style="width: 70px;">번호</th>
-							<th>제목</th>
-							<th class="text-center" style="width: 100px;">날짜</th>
-							<th class="text-center" style="width: 70px;">조회수</th>
+							<th class="text-center" style="width: 150px;">번호</th>
+							<th class="text-center">제목</th>
+							<th class="text-center" style="width: 150px;">날짜</th>
+							<th class="text-center" style="width: 100px;">조회수</th>
 						</tr>
 					</thead>
 					<tbody>

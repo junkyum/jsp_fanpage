@@ -197,41 +197,13 @@ h1, h2, h3, h4, h5, h6, a {
 
 
 <form name="loginForm" method="post">
-<%-- <div class="container">
-    <div class="row">
-        <div class="col-md-offset-5 col-md-3" style = "height:600px;">
-        
-	            <div class="form-login" style = "margin: auto auto;" >
-	            <h4>로그인 창입니다.</h4>
-	            
-	            <label for="userId" class="lbl">아이디</label>
-	            <input type="text" id="userId" name="userId" class="form-control input-sm chat-input" placeholder="userId" />
-	            <br>
-	            <label for="userPwd"  class="lbl">패스워드</label>
-	            <input type="password" id="userPw" name="userPw" class="form-control input-sm chat-input" placeholder="userPw" />
-	            
-	            <br>
-	            <div class="wrapper">
-		            <span class="group-btn">     
-		              <button type="button" class="btn btn-primary btn-md" onclick="login();"> login <i class="fa fa-sign-in"></i></button>
-		            </span>
-		        </div>
-	        
-	        	<!-- 실패했을시 메세지-->
-	        	<div>${message}</div>
-	        
-            </div>  
-        </div>
-    </div>
-</div> --%>
 
-
-<div class="login">1
-  <div class="login-header">2
+<div class="login">
+  <div class="login-header">
     <h1>Login</h1>
   </div>
   
-  <div class="login-form">3
+  <div class="login-form">
   
     <h3>UserI.D</h3>
     <input type="text" placeholder="userId" id="userId" name="userId"/><br>
@@ -241,7 +213,7 @@ h1, h2, h3, h4, h5, h6, a {
     <br>
     <input type="button" value="Login" class="login-button" onclick="login();"/>
     <!-- <button type="button" class="btn btn-primary btn-md" onclick="login();"> login <i class="fa fa-sign-in"></i></button> -->
-    <h6 class="no-access">메에에에로로로로로롱~~~</h6>
+  
   </div>
   
 </div>

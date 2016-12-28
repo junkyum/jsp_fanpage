@@ -79,17 +79,17 @@ function selectList(){
 
 
 	<div class="container" role="main">
-		<div style="margin: 10px;">
+		<!-- <div style="margin: 10px;">
 			<form name="selectListForm" method="post" class="form-inline">
 				<select class="form-control input-sm" name="sort" onchange="selectList();">
 					<option value="b.boardnum">번호순</option>
 					<option value="b.hitcount">인기순</option>
-					<!-- <option value="#">추천순</option> -->
+					<option value="#">추천순</option>
 				</select>
 			</form>
 
-		</div>
-		<div class="table-responsive" style="clear: both;">
+		</div> -->
+		<div class="table-responsive" style="clear: both;margin: 10px;">
 			<table class="table table-hover">
 
 				<thead>

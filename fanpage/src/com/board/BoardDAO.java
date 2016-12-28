@@ -177,7 +177,6 @@ public class BoardDAO {
 			rs=pstmt.executeQuery();
 			while(rs.next())
 			{
-				System.out.println(rs.getInt("hitCount"));
 				BoardDTO dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserName(rs.getString("userName"));
@@ -237,7 +236,6 @@ public class BoardDAO {
 			rs=pstmt.executeQuery();
 			while(rs.next())
 			{
-				System.out.println(rs.getInt("hitCount"));
 				BoardDTO dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserName(rs.getString("userName"));

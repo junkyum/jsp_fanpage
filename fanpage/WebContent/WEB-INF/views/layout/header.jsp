@@ -37,7 +37,6 @@
 				</c:if>
 				<c:if test="${not empty sessionScope.member}">
 					<li>
-						<%-- <a href="#"><span style="color:blue;">${sessionScope.member.userName}</span>준겸님</a> --%>
 						<button type="button" class="btn btn-danger navbar-btn dropdown-toggle"
 							data-toggle="modal" data-target=".bs-example-modal-sm">${sessionScope.member.userName}의 정보보기</button>
 
@@ -75,9 +74,6 @@
 					<li><a href="<%=cp%>/member/logout.do"><span
 							class="glyphicon glyphicon-log-out"></span>로그아웃</a></li>
 				</c:if>
-				<li></li>
-				<li><a href="#"><span class="glyphicon glyphicon-cloud"></span>사이트맵</a>
-				</li>
 			</ul>
 		</div>
 		<!-- /.navbar-collapse -->

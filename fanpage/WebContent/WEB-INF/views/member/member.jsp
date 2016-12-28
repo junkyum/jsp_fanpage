@@ -131,15 +131,15 @@ function check(){
 	
 		<div class="row" align="center">
 		  <div class="col-lg-6">
-		    <div class="input-group">
-		      <span class="input-group-addon">
+		    <div class="input-group" style = "width:700px;" >
+		      <span class="input-group-addon" style = "width:150px; height:50px;">
 		        	아이디
 		      </span>
 
-		      <input type="text" placeholder="userId" class="form-control" id="userId" name="userId" 
-		      value="${dto.userId}"${mode=="update" ? "readonly='readonly' style='border:none;'":""}>
+		      <input type="text" placeholder="아이디는 5~10자 이내이며, 첫글자는 영문자로 시작해야 합니다." class="form-control" id="userId" name="userId" 
+		      value="${dto.userId}"${mode=="update" ? "readonly='readonly' style='width:550px; height:50px;'":""} style = "width:550px; height:50px;">
 		
-		      <p class="help-block">아이디는 5~10자 이내이며, 첫글자는 영문자로 시작해야 합니다.</p>
+		     <!--  <p class="help-block">아이디는 5~10자 이내이며, 첫글자는 영문자로 시작해야 합니다.</p> -->
 		      
 		    </div>
 		  </div>
@@ -147,13 +147,13 @@ function check(){
 		
 		<br><br>
 		<div class="row">
-		  <div class="col-lg-6">
-		    <div class="input-group">
-		      <span class="input-group-addon">
+		  <div class="col-lg-6" style = "width:700px;">
+		    <div class="input-group" style = "width:700px;">
+		      <span class="input-group-addon" style = "width:150px; height:50px;">
 		        	이 름
 		      </span>
-		      <input type="text" placeholder="userName" class="form-control" id="userName" name="userName" value="${dto.userName}">
-		      <p class="help-block">이름 입력해주세요.</p>
+		      <input type="text" placeholder="이름 입력해주세요." class="form-control" id="userName" name="userName" value="${dto.userName}" style = "width:550px; height:50px;">
+		      <!-- <p class="help-block">이름 입력해주세요.</p> -->
 		    </div>
 		  </div>
 		</div>
@@ -161,12 +161,12 @@ function check(){
 		<br><br>
 		<div class="row">
 		  <div class="col-lg-6">
-		    <div class="input-group">
-		      <span class="input-group-addon">
+		    <div class="input-group" style = "width:700px;">
+		      <span class="input-group-addon" style = "width:150px; height:50px;">
 		        	패스워드
 		      </span>
-		      <input type="password" placeholder="userPw" class="form-control" id="userPw" name="userPw" >
-		      <p class="help-block">패스워드는 5~10자이며 하나 이상의 숫자나 특수문자가 포함되어야 합니다.</p>
+		      <input type="password" placeholder="패스워드는 5~10자이며 하나 이상의 숫자나 특수문자가 포함되어야 합니다." class="form-control" id="userPw" name="userPw" style = "width:550px; height:50px;">
+		      <!-- <p class="help-block">패스워드는 5~10자이며 하나 이상의 숫자나 특수문자가 포함되어야 합니다.</p> -->
 		    </div>
 		  </div>
 		</div>
@@ -174,12 +174,12 @@ function check(){
 		<br><br>
 		<div class="row">
 		  <div class="col-lg-6">
-		    <div class="input-group">
-		      <span class="input-group-addon">
+		    <div class="input-group" style = "width:700px;">
+		      <span class="input-group-addon" style = "width:150px; height:50px;">
 		        	패스워드 확인
 		      </span>
-		      <input type="password" placeholder="userPwCheck" class="form-control" id="userPwCheck" name="userPwdCheck" >
-		      <p class="help-block">패스워드를 한번 더 입력해주세요.</p>
+		      <input type="password" placeholder="패스워드를 한번 더 입력해주세요." class="form-control" id="userPwCheck" name="userPwdCheck" style = "width:550px; height:50px;">
+		      <!-- <p class="help-block">패스워드를 한번 더 입력해주세요.</p> -->
 		    </div>
 		  </div>
 		</div>
@@ -189,11 +189,11 @@ function check(){
 		<br><br>
 		<div class="row">
 		  <div class="col-lg-6">
-		    <div class="input-group">
-		      <span class="input-group-addon">전화번호 </span>
+		    <div class="input-group"  style = "width:700px;">
+		      <span class="input-group-addon" style = "width:150px; height:50px;">전화번호 </span>
 		      
-		      	 <div class="col-sm-3" style="padding-right: 5px;">
-		      	<select class="form-control" id="userPhone1" name="userPhone1" >
+		      	<div class="col-sm-3" >
+		      	<select class="form-control" id="userPhone1" name="userPhone1" style = "width:120px; height:50px;">
 								<option value="">선 택</option>
 								<option value="010" ${dto.userPhone1=="010" ? "selected='selected'" : ""}>010</option>
 								<option value="011" ${dto.userPhone1=="011" ? "selected='selected'" : ""}>011</option>
@@ -207,13 +207,13 @@ function check(){
 		      	 <p class="form-control-static">-</p>
 		      </div>
 		      <div class="col-lg-3" style="width: 100px; padding-left: 2px; padding-right: 5px">
-				 <input class="form-control" id="userPhone2" name="userPhone2" type="text"  maxlength="4" value="${dto.userPhone2}">	
+				 <input class="form-control" id="userPhone2" name="userPhone2" type="text"  maxlength="4" value="${dto.userPhone2}" style = "width:100px; height:50px;">	
 			  </div>
 			  <div class="col-lg-1" style="width: 10px; padding-left: 2px; padding-right: 5px">
 		      	 <p class="form-control-static">-</p>
 		      </div>
 		      <div class="col-lg-3" style="width: 100px; padding-left: 2px; padding-right: 5px">
-			<input class="form-control" id="userPhone3" name="userPhone3" type="text" maxlength="4"  value="${dto.userPhone3}">	
+			<input class="form-control" id="userPhone3" name="userPhone3" type="text" maxlength="4"  value="${dto.userPhone3}" style = "width:100px; height:50px;">	
 			  </div>
 		      		
 		    </div>
@@ -223,12 +223,12 @@ function check(){
 		<br><br>
 		<div class="row">
 		  <div class="col-lg-6">
-		    <div class="input-group">
-		      <span class="input-group-addon">
+		    <div class="input-group" style = "width:700px;">
+		      <span class="input-group-addon"  style = "width:150px; height:50px;">
 		        	이메일
 		      </span>
-		      <input type="email" placeholder="userEmail" class="form-control" id="userEmail" name="userEmail" value="${dto.userEmail}">
-		      <p class="help-block">이메일형식 => xxx@xxx.xx 입니다</p>
+		      <input type="email" placeholder="이메일형식 => xxx@xxx.xx 입니다" class="form-control" id="userEmail" name="userEmail" value="${dto.userEmail}"  style = "width:550px; height:50px;">
+		     
 		    </div>
 		  </div>
 		</div>
@@ -236,12 +236,12 @@ function check(){
 		<br><br>
 		<div class="row">
 		  <div class="col-lg-6">
-		    <div class="input-group">
-		      <span class="input-group-addon">
+		    <div class="input-group" style = "width:700px;">
+		      <span class="input-group-addon"  style = "width:150px; height:50px;">
 		        	생년월일
 		      </span>
-		      <input type="text" placeholder="userBirth" class="form-control" id="userBirth" name="userBirth" value="${dto.userBirth}" >
-		      <p class="help-block">생년월일은 2000-01-01 형식</p>
+		      <input type="text" placeholder="생년월일은 2000-01-01 형식" class="form-control" id="userBirth" name="userBirth" value="${dto.userBirth}" style = "width:550px; height:50px;">
+		    
 		    </div>
 		  </div>
 		</div>
@@ -250,8 +250,8 @@ function check(){
 		<br><br>
 		<div class="row">
 		  <div class="col-lg-6">
-		    <div class="input-group">
-	    	  <span class="input-group-addon">취미~~~~</span>
+		    <div class="input-group" style = "width:700px;">
+	    	  <span class="input-group-addon" style = "width:150px; height:50px; border">취미</span>
 		     	<input type="checkbox" name="userHobby" id="userHobby" value="축구">축구
 		     	<input type="checkbox" name="userHobby" id="userHobby" value="야구">야구
 		     	<input type="checkbox" name="userHobby" id="userHobby" value="족구">족구
@@ -264,9 +264,8 @@ function check(){
 		<div class="row">
 		  <div class="col-lg-6">
 		    <div class="input-group">
-	    	  <span class="input-group-addon">사진줘</span>
-				<input type="file" name="myPhoto" id="myPhoto" class="form-control">
-		      		<p class="help-block">사진</p>
+	    	  <span class="input-group-addon" style = "width:150px;">회원사진</span>
+				<input type="file" name="myPhoto" id="myPhoto" class="form-control" style = "height:50px;">
 					<c:if test="${mode=='update'}">
 					<img  src="<%=cp%>/uploads/myPhoto/${dto.myPhoto}" style="width: 200px; height: 200px;">
 					<input type="hidden" value="${dto.myPhoto}" name="myPhoto">

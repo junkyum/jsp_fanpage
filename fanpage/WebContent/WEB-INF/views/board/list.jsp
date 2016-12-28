@@ -121,6 +121,14 @@ function selectList(){
 			</table>
 
 		</div>
+		<div class="paging" style="text-align: center; min-height: 50px; line-height: 50px;">
+	         <c:if test="${dataCount==0}">
+	         	등록된 게시물이 없습니다
+	         </c:if>
+	            <c:if test="${dataCount!=0}">
+	         	${paging}
+	         </c:if>
+	    </div>
 		<div style="clear: both;">
 			<div style="float: left; width: 20%; min-width: 85px;">
 				<button type="button" class="btn btn-primary btn-sm bbtn"
@@ -141,6 +149,7 @@ function selectList(){
 					</button>
 				</form>
 			</div>
+			     
 			<div
 				style="float: left; width: 20%; min-width: 85px; text-align: right;">
 				<button type="button" class="btn btn-primary btn-sm bbtn"

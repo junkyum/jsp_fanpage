@@ -151,31 +151,25 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
 		StringBuffer sb = new StringBuffer();
-		System.out.println(order);
 		try {
 			sb.append("select * from(select ROWNUM rnum , tb.* from(");
 			sb.append("select boardNum, userName, subject, content, to_char(b.created,'YYYY-MM-DD') created, hitCount, groupNum, depth, orderNo ");
 			sb.append("from board b join member m on m.userid = b.userid ");
 			if(order.equals("")) {sb.append(" order by groupNum DESC ,orderNo ASC )");
-			System.out.println("dd");
 			}
-			
 			else if(order.equals("b.hitcount")){
-				sb.append(" order by ? DESC, groupNum DESC ,orderNo ASC )");
-				System.out.println("kk");
+				sb.append(" order by ? DESC )");
 			}
 			sb.append("tb where ROWNUM <=?) where rnum >= ?");
 
 			pstmt=conn.prepareStatement(sb.toString());
 			if(order.equals(""))
 			{
-			System.out.println(order+"dd");
 			pstmt.setInt(1,end);
 			pstmt.setInt(2,start);
 			}
 			else if(order.equals("b.hitcount"))
 			{
-			System.out.println(order+"kk");
 			pstmt.setString(1,order);
 			pstmt.setInt(2,end);
 			pstmt.setInt(3,start);
@@ -183,6 +177,7 @@ public class BoardDAO {
 			rs=pstmt.executeQuery();
 			while(rs.next())
 			{
+				System.out.println(rs.getInt("hitCount"));
 				BoardDTO dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserName(rs.getString("userName"));
@@ -223,7 +218,7 @@ public class BoardDAO {
 				sb.append("to_char(b.created,'YYYY-MM-DD') = ?");
 			
 			if(order.equals("")) sb.append(" order by groupNum DESC ,orderNo ASC )");
-			else if(order.equals("b.hitcount")) sb.append(" order by ? DESC, groupNum DESC ,orderNo ASC )");
+			else if(order.equals("b.hitcount")) sb.append(" order by ? DESC )");
 			
 			sb.append("tb where ROWNUM <=?) where rnum >= ?");
 
@@ -242,6 +237,7 @@ public class BoardDAO {
 			rs=pstmt.executeQuery();
 			while(rs.next())
 			{
+				System.out.println(rs.getInt("hitCount"));
 				BoardDTO dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserName(rs.getString("userName"));
@@ -277,6 +273,7 @@ public class BoardDAO {
 			rs=pstmt.executeQuery();
 			if(rs.next())
 			{
+				
 				dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserId(rs.getString("userId"));

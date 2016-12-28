@@ -33,10 +33,10 @@
 
 
 
-<div class="jumbotron">
+<div class="jumbotron" class = "text-center">
   <h1>Hello, ${userName}님 ${title}</h1>
   <p>${message}</p>
-  <p><button type="button" onclick="javascript:location.href='<%=cp%>/';">메인으로 간담</button></p>
+  <p><button type="button" onclick="javascript:location.href='<%=cp%>/';">메인으로 </button></p>
 </div>
 <!------------------------------------------------------------------------------>
 <div>

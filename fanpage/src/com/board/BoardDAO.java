@@ -111,7 +111,7 @@ public class BoardDAO {
 		ResultSet rs=null;
 		String sql;
 		try {
-			sql="SELECT COUNT(*) FROM board b join member1 m on b.userid = m.userid where ";
+			sql="SELECT COUNT(*) FROM board b join member m on b.userid = m.userid where ";
 			if(searchKey.equals("userName"))
 				sql+= "instr(userName,?) = 1";
 			else if(searchKey.equals("subject"))
@@ -146,23 +146,38 @@ public class BoardDAO {
 		}
 		return result;
 	}
-	public List<BoardDTO> listBoard(int start, int end){
+	public List<BoardDTO> listBoard(int start, int end,String order){
 		List<BoardDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
 		StringBuffer sb = new StringBuffer();
 		try {
 			sb.append("select * from(select ROWNUM rnum , tb.* from(");
-			sb.append("select boardNum, userName, subject, content, to_char(created,'YYYY-MM-DD') created, hitCount, groupNum, depth, orderNo ");
-			sb.append("from board b join member1 m1 on m1.userid = b.userid  order by groupNum DESC,orderNo ASC )");
+			sb.append("select boardNum, userName, subject, content, to_char(b.created,'YYYY-MM-DD') created, hitCount, groupNum, depth, orderNo ");
+			sb.append("from board b join member m on m.userid = b.userid ");
+			if(order.equals("")) {sb.append(" order by groupNum DESC ,orderNo ASC )");
+			}
+			else if(order.equals("b.hitcount")){
+				sb.append(" order by ? DESC )");
+			}
 			sb.append("tb where ROWNUM <=?) where rnum >= ?");
 
 			pstmt=conn.prepareStatement(sb.toString());
+			if(order.equals(""))
+			{
 			pstmt.setInt(1,end);
 			pstmt.setInt(2,start);
+			}
+			else if(order.equals("b.hitcount"))
+			{
+			pstmt.setString(1,order);
+			pstmt.setInt(2,end);
+			pstmt.setInt(3,start);
+			}
 			rs=pstmt.executeQuery();
 			while(rs.next())
 			{
+				System.out.println(rs.getInt("hitCount"));
 				BoardDTO dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserName(rs.getString("userName"));
@@ -184,15 +199,15 @@ public class BoardDAO {
 		}
 		return list;
 	}
-	public List<BoardDTO> listBoard(int start, int end,String searchKey,String searchValue){
+	public List<BoardDTO> listBoard(int start, int end,String searchKey,String searchValue,String order){
 		List<BoardDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
 		StringBuffer sb = new StringBuffer();
 		try {
 			sb.append("select * from(select ROWNUM rnum , tb.* from(");
-			sb.append("select boardNum, userName, subject, content, to_char(created,'YYYY-MM-DD') created, hitCount, groupNum, depth, orderNo ");
-			sb.append("from board b join member1 m1 on m1.userid = b.userid where ");
+			sb.append("select boardNum, userName, subject, content, to_char(b.created,'YYYY-MM-DD') created, hitCount, groupNum, depth, orderNo ");
+			sb.append("from board b join member m on m.userid = b.userid where ");
 			if(searchKey.equals("userName"))
 				sb.append("instr(userName,?) = 1");
 			else if(searchKey.equals("subject"))
@@ -200,17 +215,29 @@ public class BoardDAO {
 			else if(searchKey.equals("content"))
 				sb.append("instr(content,?) >= 1");
 			else if(searchKey.equals("created"))
-				sb.append("to_char(created,'YYYY-MM-DD') = ?");
-			sb.append(" order by groupNum DESC ,orderNo ASC )");
+				sb.append("to_char(b.created,'YYYY-MM-DD') = ?");
+			
+			if(order.equals("")) sb.append(" order by groupNum DESC ,orderNo ASC )");
+			else if(order.equals("b.hitcount")) sb.append(" order by ? DESC )");
+			
 			sb.append("tb where ROWNUM <=?) where rnum >= ?");
 
 			pstmt=conn.prepareStatement(sb.toString());
+			if(order.equals("")){
 			pstmt.setString(1, searchValue);
 			pstmt.setInt(2,end);
 			pstmt.setInt(3,start);
+			}
+			else if(order.equals("b.hitcount")){
+			pstmt.setString(1, searchValue);
+			pstmt.setString(2, order);
+			pstmt.setInt(3,end);
+			pstmt.setInt(4,start);
+			}
 			rs=pstmt.executeQuery();
 			while(rs.next())
 			{
+				System.out.println(rs.getInt("hitCount"));
 				BoardDTO dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserName(rs.getString("userName"));
@@ -239,13 +266,14 @@ public class BoardDAO {
 		StringBuffer sb = new StringBuffer();
 		try {
 			sb.append("SELECT boardNum,b.userId,userName,subject,content,hitCount,");
-			sb.append(" to_char(created,'YYYY-MM-DD') created,groupNum, depth, orderNo,parent ");
-			sb.append(" from board b join member1 m on m.userId=b.userId where boardNum=?");
+			sb.append(" to_char(b.created,'YYYY-MM-DD') created,groupNum, depth, orderNo,parent ");
+			sb.append(" from board b join member m on m.userId = b.userId where boardNum=?");
 			pstmt=conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, boardNum);
 			rs=pstmt.executeQuery();
 			if(rs.next())
 			{
+				
 				dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserId(rs.getString("userId"));
@@ -276,9 +304,9 @@ public class BoardDAO {
 	        try {
 	            if(searchValue!=null && searchValue.length() != 0) {
 	                sb.append("SELECT ROWNUM, tb.* FROM (SELECT boardNum, subject FROM board b ");
-	    			sb.append(" JOIN member1 m ON b.userId=m.userId");
+	    			sb.append(" JOIN member m ON b.userId = m.userId");
 	    			if(searchKey.equals("created"))
-	    				sb.append("           WHERE (TO_CHAR(created, 'YYYY-MM-DD') = ? ) AND ");
+	    				sb.append("           WHERE (TO_CHAR(b.created, 'YYYY-MM-DD') = ? ) AND ");
 	    			else if(searchKey.equals("userName"))
 	    				sb.append("           WHERE (INSTR(userName, ?) = 1 ) AND ");
 	    			else
@@ -296,7 +324,7 @@ public class BoardDAO {
 	                pstmt.setInt(4, groupNum);
 				} else {
 	                sb.append("SELECT ROWNUM, tb.* FROM ( ");
-	                sb.append("     SELECT boardNum, subject FROM board b JOIN member1 m ON b.userId=m.userId ");                
+	                sb.append("     SELECT boardNum, subject FROM board b JOIN member m ON b.userId = m.userId ");                
 	                sb.append("  WHERE (groupNum = ? AND orderNo < ?) ");
 	                sb.append("         OR (groupNum > ? ) ");
 	                sb.append("         ORDER BY groupNum ASC, orderNo DESC) tb WHERE ROWNUM = 1 ");
@@ -334,9 +362,9 @@ public class BoardDAO {
 	                sb.append("SELECT ROWNUM, tb.* FROM ( ");
 	                sb.append("  SELECT boardNum, subject ");
 	    			sb.append("               FROM board b");
-	    			sb.append("               JOIN member1 m ON b.userId=m.userId");
+	    			sb.append("               JOIN member m ON b.userId=m.userId");
 	    			if(searchKey.equals("created"))
-	    				sb.append("           WHERE (TO_CHAR(created, 'YYYY-MM-DD') = ? ) AND ");
+	    				sb.append("           WHERE (TO_CHAR(b.created, 'YYYY-MM-DD') = ? ) AND ");
 	    			else if(searchKey.equals("userName"))
 	    				sb.append("           WHERE (INSTR(userName, ?) = 1) AND ");
 	    			else
@@ -355,7 +383,7 @@ public class BoardDAO {
 				} 
 	            else {
 	                sb.append("SELECT ROWNUM, tb.* FROM ( ");
-	                sb.append("     SELECT boardNum, subject FROM board b JOIN member1 m ON b.userId=m.userId ");
+	                sb.append("     SELECT boardNum, subject FROM board b JOIN member m ON b.userId=m.userId ");
 	                sb.append("  WHERE (groupNum = ? AND orderNo > ?) ");
 	                sb.append("         OR (groupNum < ? ) ");
 	                sb.append("         ORDER BY groupNum DESC, orderNo ASC) tb WHERE ROWNUM = 1 ");
@@ -436,5 +464,20 @@ public class BoardDAO {
 			}
 			return result;
 	    }
+	 public int updateHitCount(int boardNum){
+			int result=0;
+			PreparedStatement pstmt = null;
+			String sql;
+			try {
+				sql ="UPDATE board set hitCount = hitCount+1 where boardnum=?";
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setInt(1, boardNum);
+				result=pstmt.executeUpdate();
+				pstmt.close();
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			}
+			return result;
+		}
 	 
 }

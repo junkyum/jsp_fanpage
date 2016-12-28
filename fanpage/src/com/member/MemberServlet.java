@@ -1,5 +1,6 @@
 package com.member;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -9,17 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.util.FileManager;
 import com.util.MyServlet;
 @WebServlet("/member/*")
 public class MemberServlet extends MyServlet{
 
 	private static final long serialVersionUID = 1L;
-	//MemberDAO dao= new MemberDAO();
+	private String pathname;
+	private SessionInfo info;
 	@Override
 	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
-		//		 String cp= req.getContextPath();
+		String cp= req.getContextPath();
 		String uri= req.getRequestURI();//member
+		///////////////////////////////////////////////////////
+
 
 
 		if(uri.indexOf("login.do")!=-1) { login(req, resp); }
@@ -74,13 +81,13 @@ public class MemberServlet extends MyServlet{
 
 		info.setUserId(dto.getUserId());
 		info.setUserName(dto.getUserName());
-		info.setUserPhone1(dto.getUserPhone1());
-		info.setUserPhone2(dto.getUserPhone2());
-		info.setUserPhone3(dto.getUserPhone3());
+		info.setUserPhone(dto.getUserPhone());
 		info.setUserEmail(dto.getUserEmail());
 		info.setUserBirth(dto.getUserBirth());
 		info.setUserHobby(dto.getUserHobby());
-
+		info.setMyPhoto(dto.getMyPhoto());
+		
+		
 		sesion.setAttribute("member",info);
 
 
@@ -106,17 +113,38 @@ public class MemberServlet extends MyServlet{
 		MemberDAO dao= new MemberDAO();
 		int result=0;
 		
-		dto.setUserId(req.getParameter("userId"));
-		dto.setUserName(req.getParameter("userName"));
-		dto.setUserPw(req.getParameter("userPw"));
-		dto.setUserEmail(req.getParameter("userEmail"));
-		dto.setUserBirth(req.getParameter("userBirth"));
+			//////////////////////////////////////////////
+		HttpSession sesion = req.getSession();
+		String root= sesion.getServletContext().getRealPath("/");
+		pathname=root+File.separator+"uploads"+File.separator+"myPhoto";
+	
+		File f= new File(pathname);
+		
+		if(!f.exists())
+			f.mkdirs();
+	
+			
+		String cp= req.getContextPath();
+			
+		String encType="UTF-8";
+		int maxSize=5*1024*1024;
+		MultipartRequest mreq=new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
+			
+		String saveFile = mreq.getFilesystemName("myPhoto");
+		saveFile=FileManager.doFilerename(pathname, saveFile);
 
-		String [] ss= req.getParameterValues("userHobby");
+		dto.setMyPhoto(saveFile);
+
+		dto.setUserId(mreq.getParameter("userId"));
+		dto.setUserName(mreq.getParameter("userName"));
+		dto.setUserPw(mreq.getParameter("userPw"));
+		dto.setUserEmail(mreq.getParameter("userEmail"));
+		dto.setUserBirth(mreq.getParameter("userBirth"));
+
+		String [] ss= mreq.getParameterValues("userHobby");
 		String hobby=" ";
 
 		if(ss !=null ){
-			
 			for (int i = 0; i < ss.length; i++) {
 				hobby+=ss[i];
 			}
@@ -124,9 +152,9 @@ public class MemberServlet extends MyServlet{
 		
 		dto.setUserHobby(hobby);
 
-		String userPhone1=req.getParameter("userPhone1");
-		String userPhone2=req.getParameter("userPhone2");
-		String userPhone3=req.getParameter("userPhone3");
+		String userPhone1=mreq.getParameter("userPhone1");
+		String userPhone2=mreq.getParameter("userPhone2");
+		String userPhone3=mreq.getParameter("userPhone3");
 
 		if(userPhone1!=null && userPhone1.length() !=0 && userPhone2!=null && userPhone2.length() !=0 &&
 				userPhone3!=null && userPhone3.length() !=0 ){
@@ -162,12 +190,13 @@ public class MemberServlet extends MyServlet{
 		HttpSession sesion= req.getSession();
 		//System.out.println(sesion.getAttribute("member"));
 		SessionInfo info= (SessionInfo)sesion.getAttribute("member");
-
+		
 		String userId= info.getUserId();
 		String userName = info.getUserName();
+		String myPhoto=info.getMyPhoto();
 		dto.setUserId(userId);
 		dto.setUserName(userName);
-
+		dto.setMyPhoto(myPhoto);
 
 		req.setAttribute("mode","update");
 		req.setAttribute("dto", dto);
@@ -182,23 +211,47 @@ public class MemberServlet extends MyServlet{
 
 		MemberDTO dto = new MemberDTO();
 		MemberDAO dao = new MemberDAO();
+/////////////////////////////////////////////////////////
+		HttpSession sesion = req.getSession();
+		String root= sesion.getServletContext().getRealPath("/");
+		pathname=root+File.separator+"uploads"+File.separator+"myPhoto";
+		SessionInfo info = (SessionInfo)sesion.getAttribute("member");	
+		String encType="UTF-8";
+		int maxSize=5*1024*1024;
+		MultipartRequest mreq=new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
+			
 
-
-
-		dto.setUserId(req.getParameter("userId"));
-		dto.setUserName(req.getParameter("userName"));
-		dto.setUserPw(req.getParameter("userPw"));
-		dto.setUserEmail(req.getParameter("userEmail"));
-		dto.setUserBirth(req.getParameter("userBirth"));
-		String [] ss= req.getParameterValues("userHobby");
+		String saveFile = mreq.getFilesystemName("myPhoto");//새롭게 저장한 사진.
+		
+		String beforePhoto =mreq.getParameter("myPhoto");//그전에 저장되어있는 파일
+		
+		if(saveFile!=null){	//save에 정보가 들어있다면.
+			if(!beforePhoto.equals(saveFile))
+				FileManager.doFiledelete(pathname, beforePhoto);
+				
+					saveFile=FileManager.doFilerename(pathname, saveFile);
+					dto.setMyPhoto(saveFile);				
+					info.setMyPhoto(saveFile);//인포에 세롭게 저장
+		}else {
+			dto.setMyPhoto(mreq.getParameter("imgFile"));	
+		}
+	
+		
+//////////////////////////////////////////////////////////////
+		dto.setUserId(mreq.getParameter("userId"));
+		dto.setUserName(mreq.getParameter("userName"));
+		dto.setUserPw(mreq.getParameter("userPw"));
+		dto.setUserEmail(mreq.getParameter("userEmail"));
+		dto.setUserBirth(mreq.getParameter("userBirth"));
+		String [] ss= mreq.getParameterValues("userHobby");
 		String hobby="";
 		for (int i = 0; i < ss.length; i++) {
 			hobby+=ss[i];
 		}
 		dto.setUserHobby(hobby);
-		String userPhone1=req.getParameter("userPhone1");
-		String userPhone2=req.getParameter("userPhone2");
-		String userPhone3=req.getParameter("userPhone3");
+		String userPhone1=mreq.getParameter("userPhone1");
+		String userPhone2=mreq.getParameter("userPhone2");
+		String userPhone3=mreq.getParameter("userPhone3");
 		if(userPhone1!=null && userPhone1.length() !=0 && userPhone2!=null && userPhone2.length() !=0 &&
 				userPhone3!=null && userPhone3.length() !=0 ){
 			dto.setUserPhone(userPhone1+"-"+userPhone2+"-"+userPhone3);
@@ -216,23 +269,43 @@ public class MemberServlet extends MyServlet{
 	//탈퇴를 했을떄의 상황
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		
+		//System.out.println(sesion.getAttribute("member"));
 		MemberDAO dao= new MemberDAO();
 		HttpSession sesion= req.getSession();
-		//System.out.println(sesion.getAttribute("member"));
 		SessionInfo info= (SessionInfo)sesion.getAttribute("member");
 		String userId= (String)info.getUserId();
+		String myPhoto =(String)info.getMyPhoto();
+	
+		String saveFile=req.getParameter(myPhoto);
+		FileManager.doFiledelete(pathname, myPhoto);
+		System.out.println(myPhoto+"-----------------------");
+			
 		req.setAttribute("userId", userId);
 		int check=dao.delete(userId);
 		if(check==1)
 			sesion.invalidate();
-		
+	   
 		
 		
 		forward(req, resp, "/WEB-INF/views/member/login.jsp");
 	}
 	
+/*	HttpSession sesion = req.getSession();
+	String root= sesion.getServletContext().getRealPath("/");
+	pathname=root+File.separator+"uploads"+File.separator+"myPhoto";
+	SessionInfo info = (SessionInfo)sesion.getAttribute("member");	
+	String encType="UTF-8";
+	int maxSize=5*1024*1024;
+	MultipartRequest mreq=new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
+		
+
+	String saveFile = mreq.getFilesystemName("myPhoto");//새롭게 저장한 사진.
 	
+	String beforePhoto =mreq.getParameter("myPhoto");//그전에 저장되어있는 파일
 	
-	
+	if(saveFile!=null){	//save에 정보가 들어있다면.
+		if(!beforePhoto.equals(saveFile))
+			FileManager.doFiledelete(pathname, beforePhoto);
+	*/
 
 }

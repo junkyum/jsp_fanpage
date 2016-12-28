@@ -27,9 +27,10 @@
 
 function check(){
 	var f=document.memberForm;
-		var kim;
+	var kim;
 	var chk;
 	var mode="${mode}";
+
 
 	kim=f.userId.value;
 	if(mode=="created"){
@@ -82,14 +83,21 @@ function check(){
         return false;
     }
     
-    kim=f.userEmail.value;
+    kim = f.userEmail.value;
     if(kim.match(/[a-z0-9A-Z]+@[0-9A-Za-z]+(.[a-z]+)+/g)!=kim){
 		alert("Email 다시입력");
         f.userEmail.focus();
         return false;
 	} 
-    
 
+    kim = f.myPhoto.value;
+	  if(mode=="created") {
+	  		if(! /(\.gif|\.jpg|\.png|\.jpeg)$/i.test(kim)) {
+	  			alert('이미지 파일만 가능합니다. !!!');
+	  			f.upload.focus();
+	  			return false;
+	  		}
+	  	  }
 
 	
 	if(mode=="created"){
@@ -119,7 +127,7 @@ function check(){
     <!--  ------------------------------>
         <div>
             	
-	<form name="memberForm" method="post" onsubmit="return check();" >
+	<form name="memberForm" method="post"  onsubmit="return check();" enctype="multipart/form-data">
 	
 		<div class="row" align="center">
 		  <div class="col-lg-6">
@@ -244,12 +252,27 @@ function check(){
 		  <div class="col-lg-6">
 		    <div class="input-group">
 	    	  <span class="input-group-addon">취미~~~~</span>
-		     
-		     	<input type="checkbox" name="userHobby" id="userHobby" value="축구" >축구
+		     	<input type="checkbox" name="userHobby" id="userHobby" value="축구">축구
 		     	<input type="checkbox" name="userHobby" id="userHobby" value="야구">야구
 		     	<input type="checkbox" name="userHobby" id="userHobby" value="족구">족구
-
 		      <p class="help-block">  취미를  입력하세요 [선택사항]</p>
+			</div>
+		  </div>
+		</div>
+
+		<br><br>
+		<div class="row">
+		  <div class="col-lg-6">
+		    <div class="input-group">
+	    	  <span class="input-group-addon">사진줘</span>
+				<input type="file" name="myPhoto" id="myPhoto" class="form-control">
+		      		<p class="help-block">사진</p>
+					<c:if test="${mode=='update'}">
+					<img  src="<%=cp%>/uploads/myPhoto/${dto.myPhoto}" style="width: 200px; height: 200px;">
+					<input type="hidden" value="${dto.myPhoto}" name="myPhoto">
+					<p class="help-block">등록된사진</p>
+					<input type="hidden" name="imgFile" value="${dto.myPhoto}">
+					</c:if>
 			</div>
 		  </div>
 		</div>
@@ -283,27 +306,6 @@ function check(){
 		  </div>
 		</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	</form>
         </div>
         
@@ -311,6 +313,10 @@ function check(){
         <!-- ---------------- -->
     </div>
 </div>
+
+
+
+
 <!-- -------------- -->
 <div>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>

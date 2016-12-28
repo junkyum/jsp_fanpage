@@ -145,7 +145,7 @@ function updateVisit(num)  {
 	<table
 		style="width: 560px; margin: 0px auto; margin-top: 30px; border-spacing: 0px;">
 		<tr height="40">
-			<td align="left" class="title">더 좋은 디자인 없나??</td>
+			<td align="center" class="title">방&nbsp;&nbsp;명&nbsp;&nbsp;록</td>
 		</tr>
 	</table>
 	<br>

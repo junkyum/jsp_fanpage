@@ -146,7 +146,7 @@ public class BoardDAO {
 		}
 		return result;
 	}
-	public List<BoardDTO> listBoard(int start, int end){
+	public List<BoardDTO> listBoard(int start, int end,String order){
 		List<BoardDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
@@ -154,15 +154,30 @@ public class BoardDAO {
 		try {
 			sb.append("select * from(select ROWNUM rnum , tb.* from(");
 			sb.append("select boardNum, userName, subject, content, to_char(b.created,'YYYY-MM-DD') created, hitCount, groupNum, depth, orderNo ");
-			sb.append("from board b join member m on m.userid = b.userid  order by groupNum DESC,orderNo ASC )");
+			sb.append("from board b join member m on m.userid = b.userid ");
+			if(order.equals("")) {sb.append(" order by groupNum DESC ,orderNo ASC )");
+			}
+			else if(order.equals("b.hitcount")){
+				sb.append(" order by ? DESC )");
+			}
 			sb.append("tb where ROWNUM <=?) where rnum >= ?");
 
 			pstmt=conn.prepareStatement(sb.toString());
+			if(order.equals(""))
+			{
 			pstmt.setInt(1,end);
 			pstmt.setInt(2,start);
+			}
+			else if(order.equals("b.hitcount"))
+			{
+			pstmt.setString(1,order);
+			pstmt.setInt(2,end);
+			pstmt.setInt(3,start);
+			}
 			rs=pstmt.executeQuery();
 			while(rs.next())
 			{
+				System.out.println(rs.getInt("hitCount"));
 				BoardDTO dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserName(rs.getString("userName"));
@@ -184,7 +199,7 @@ public class BoardDAO {
 		}
 		return list;
 	}
-	public List<BoardDTO> listBoard(int start, int end,String searchKey,String searchValue){
+	public List<BoardDTO> listBoard(int start, int end,String searchKey,String searchValue,String order){
 		List<BoardDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
@@ -201,16 +216,28 @@ public class BoardDAO {
 				sb.append("instr(content,?) >= 1");
 			else if(searchKey.equals("created"))
 				sb.append("to_char(b.created,'YYYY-MM-DD') = ?");
-			sb.append(" order by groupNum DESC ,orderNo ASC )");
+			
+			if(order.equals("")) sb.append(" order by groupNum DESC ,orderNo ASC )");
+			else if(order.equals("b.hitcount")) sb.append(" order by ? DESC )");
+			
 			sb.append("tb where ROWNUM <=?) where rnum >= ?");
 
 			pstmt=conn.prepareStatement(sb.toString());
+			if(order.equals("")){
 			pstmt.setString(1, searchValue);
 			pstmt.setInt(2,end);
 			pstmt.setInt(3,start);
+			}
+			else if(order.equals("b.hitcount")){
+			pstmt.setString(1, searchValue);
+			pstmt.setString(2, order);
+			pstmt.setInt(3,end);
+			pstmt.setInt(4,start);
+			}
 			rs=pstmt.executeQuery();
 			while(rs.next())
 			{
+				System.out.println(rs.getInt("hitCount"));
 				BoardDTO dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserName(rs.getString("userName"));
@@ -246,6 +273,7 @@ public class BoardDAO {
 			rs=pstmt.executeQuery();
 			if(rs.next())
 			{
+				
 				dto = new BoardDTO();
 				dto.setBoardNum(rs.getInt("boardNum"));
 				dto.setUserId(rs.getString("userId"));

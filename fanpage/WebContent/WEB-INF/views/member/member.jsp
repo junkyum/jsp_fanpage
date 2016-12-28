@@ -269,6 +269,7 @@ function check(){
 		      		<p class="help-block">사진</p>
 					<c:if test="${mode=='update'}">
 					<img  src="<%=cp%>/uploads/myPhoto/${dto.myPhoto}" style="width: 200px; height: 200px;">
+					<input type="hidden" value="${dto.myPhoto}" name="myPhoto">
 					<p class="help-block">등록된사진</p>
 					<input type="hidden" name="imgFile" value="${dto.myPhoto}">
 					</c:if>
@@ -312,6 +313,10 @@ function check(){
         <!-- ---------------- -->
     </div>
 </div>
+
+
+
+
 <!-- -------------- -->
 <div>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>

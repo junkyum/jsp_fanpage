@@ -17,12 +17,13 @@ public class VisitDAO {
 		String sql;
 		
 		try {
-			sql="INSERT INTO visit(num, userId, content) VALUES (visit_seq.NEXTVAL, ?, ?)";
+			sql="INSERT INTO visit(num, userId, userName, content) VALUES (visit_seq.NEXTVAL, ?, ?, ?)";
 			
 			
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getUserId());
-			pstmt.setString(2, dto.getContent());
+			pstmt.setString(2, dto.getUserName());
+			pstmt.setString(3, dto.getContent());
 			
 			result=pstmt.executeUpdate();
 			pstmt.close();
@@ -57,6 +58,7 @@ public class VisitDAO {
 		return result;
 	}
 	
+	
 	public List<VisitDTO> listVisit(int start, int end) {
 		List<VisitDTO> list=new ArrayList<VisitDTO>();
 		PreparedStatement pstmt=null;
@@ -66,7 +68,7 @@ public class VisitDAO {
 		try {
 			sb.append("select * from (");
 			sb.append("  select rownum rnum, tb.* from (");
-			sb.append("    select num, userId, content, to_char(created, 'YYYY-MM-DD') created ");
+			sb.append("    select num, userId, userName, content, to_char(created, 'YYYY-MM-DD') created ");
 			sb.append("    from visit");
 			sb.append("    order by num DESC");
 			sb.append("  ) tb where rownum <=?");
@@ -81,6 +83,7 @@ public class VisitDAO {
 				VisitDTO dto=new VisitDTO();
 				dto.setNum(rs.getInt("num"));
 				dto.setUserId(rs.getString("userId"));
+				dto.setUserName(rs.getString("userName"));
 				dto.setContent(rs.getString("content"));
 				dto.setCreated(rs.getString("created"));
 				list.add(dto);
@@ -113,4 +116,28 @@ public class VisitDAO {
 		}
 		return result;
 	}
+	
+	public int updateVisit(VisitDTO dto) {
+		 int result=0;
+         PreparedStatement pstmt = null;
+         String sql;
+         
+         try {
+            sql ="UPDATE visit SET content=? where num=?";
+            pstmt =conn.prepareStatement(sql);
+            
+            pstmt.setString(1, dto.getContent());
+            pstmt.setInt(2, dto.getNum());
+            
+            
+            result=pstmt.executeUpdate();
+            pstmt.close();
+            
+         } catch (Exception e) {
+            System.out.println(e.toString());
+         }
+         return result;
+	}
+	
+	
 }

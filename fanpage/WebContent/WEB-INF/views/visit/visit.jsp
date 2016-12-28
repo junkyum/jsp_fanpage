@@ -1,37 +1,13 @@
+<%@page import="com.visit.VisitDTO"%>
+<%@page import="com.visit.VisitDAO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="java.util.List"%>
 <%@page import="com.util.MyUtil"%>
-<%@page import="com.visit.VisitDTO"%>
-<%@page import="com.visit.VisitDAO"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
-
-	VisitDAO dao = new VisitDAO();
-	MyUtil util = new MyUtil();
-
-	String pageNum = request.getParameter("page");
-	int current_page = 1;
-	if (pageNum != null)
-		current_page = Integer.parseInt(pageNum);
-
-	int dataCount = dao.dataCount();
-
-	int numPerPage = 5;
-	int total_page = util.pageCount(numPerPage, dataCount);
-
-	if (current_page > total_page)
-		current_page = total_page;
-
-	int start = (current_page - 1) * numPerPage + 1;
-	int end = current_page * numPerPage;
-
-	List<VisitDTO> list = dao.listVisit(start, end);
-
-	String listUrl = "visit.do";
-	String paging = util.paging(current_page, total_page, listUrl);
 
 	String cp = request.getContextPath();
 %>
@@ -140,14 +116,20 @@ function sendVisit() {
         return;
     }
 
-    f.action = "visit_ok.do";
+    f.action = "<%=cp%>/visit/visit_ok.do";
     f.submit();
 }
 
 function deleteVisit(num)  {
 	if (confirm("위 자료를 삭제하시겠습니까 ?")) {
-		var url="delete.do?num="+num+"&page=<%=current_page%>";
-
+		var url="delete.do?num="+num;
+			location.href = url;
+		}
+	}
+	
+function updateVisit(num)  {
+	if (confirm("위 자료를 수정하시겠습니까 ?")) {
+		var url="update.do?num="+num;
 			location.href = url;
 		}
 	}
@@ -172,11 +154,11 @@ function deleteVisit(num)  {
 		<table style="width: 560px; margin: 0px auto; border-spacing: 0px;">
 
 			<tr>
-				<td colspan="2" height="2" bgcolor=#B2CCFF></td>
+				<td colspan="2" height="2" bgcolor=#41D9CD></td>
 			</tr>
 
 			<tr>
-				<td width="20%" height="40" bgcolor="D1B2FF"
+				<td width="20%" height="40" bgcolor="#FFFFFF"
 					style="padding-left: 20px;" align="left">작성자</td>
 				<td width="80%" style="padding-left: 10px;" align="left">
 				<c:if test="${empty sessionScope.member}">
@@ -185,18 +167,18 @@ function deleteVisit(num)  {
 					*비회원일 경우 id는 Guest로 등록이 되오니 참고 바랍니다.
 				</c:if>
 				
-				<c:if test="${sessionScope.member.userId!='null'}">
+				<c:if test="${sessionScope.member.userName!='null'}">
 					<p class="form-control-static">${sessionScope.member.userName}</p>
 				</c:if>
 				</td>
 			</tr>
 
 			<tr>
-				<td colspan="2" height="1" bgcolor="#B2CCFF"></td>
+				<td colspan="2" height="1" bgcolor="#41D9CD"></td>
 			</tr>
 
 			<tr>
-				<td width="20%" bgcolor="D1B2FF"
+				<td width="20%" bgcolor="#FFFFFF"
 					style="padding-left: 20px; padding-top: 5px;" valign="top"
 					align="left">내&nbsp;&nbsp;용</td>
 				<td width="80%" valign="top" style="padding: 5px 0px 5px 10px;"
@@ -220,46 +202,46 @@ function deleteVisit(num)  {
 		</table>
 	</form>
 
-	<table
-		style="width: 560px; margin: 10px auto 0px; table-layout: fixed; word-break: break-all; border-spacing: 0px;">
-		<%
-			for (VisitDTO dto : list) {
-		%>
-		<tr>
-			<td colspan='2' bgcolor='#B2CCFF' height='2'></td>
-		</tr>
-		<tr height="30">
-			<td width='260' style='padding-left: 10px;' align="left">작성자 | <%=dto.getUserId()%>
-			</td>
-			<td width='300' align='right' style='padding-right: 10px;'><%=dto.getCreated()%>
-				<c:if test="${not empty sessionScope.member && sessionScope.member.userId==dto.userId && sessionScope.member.userId!='admin'}">
-					| <a href="javascript:updateVisit('<%=dto.getNum()%>');">수정</a>
-					| <a href="javascript:deleteVisit('<%=dto.getNum()%>');">삭제</a>
-				</c:if>
-				<c:if test="${sessionScope.member.userId=='admin'}">
-					| <a href="javascript:deleteVisit('<%=dto.getNum()%>');">삭제</a>
-				</c:if>
+	<table style="width: 560px; margin: 10px auto 0px; table-layout: fixed; word-break: break-all; border-spacing: 0px;">
+		
+		<c:forEach var="dto" items="${list}">
+			<tr>
+				<td colspan='2' bgcolor='#41D9CD' height='2'></td>
+			</tr>
+			
+			<tr height="30">
+				<td width='260' style='padding-left: 10px;' align="left">작성자 | ${dto.userName}
 				</td>
-		</tr>
-		<tr>
-			<td colspan='2' bgcolor='#B2CCFF' height='1'></td>
-		</tr>
-
-		<tr>
-			<td colspan='2' height='50' valign="top"
-				style='white-space: pre; padding: 5px 10px 5px 10px;' align="left"><%=dto.getContent()%></td>
-		</tr>
-		<%
-			}
-		%>
-		<tr>
-			<td colspan='2' bgcolor='#B2CCFF' height='1'></td>
-		</tr>
+				<td width='300' align='right' style='padding-right: 10px;'>${dto.created}
+				 	<c:if test="${not empty sessionScope.member}">
+				 				
+						<c:if test="${sessionScope.member.userId==dto.userId}">
+								| <a href="javascript:updateVisit('${dto.num}');">수정</a>
+						</c:if>
+						
+						<c:if test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
+								| <a href="javascript:deleteVisit('${dto.num}');">삭제</a>
+						</c:if>
+						
+					</c:if>
+				</td>
+			</tr>
+			
+			<tr>
+				<td colspan='2' bgcolor='#41D9CD' height='1'></td>
+			</tr>
+	
+			<tr>
+				<td colspan='2' height='50' valign="top"
+					style='white-space: pre; padding: 5px 10px 5px 10px;' align="left">${dto.content}</td>
+			</tr>
+		
+		</c:forEach>
 		
 		<!-- 검색?? -->
 
 		<tr height="35">
-			<td colspan="2" align="center"><%=paging%></td>
+			<td colspan="2" align="center">${paging}</td>
 		</tr>
 	</table>
 

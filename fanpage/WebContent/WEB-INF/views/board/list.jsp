@@ -62,6 +62,7 @@ function searchList() {
 }
 function selectList(){
 	var f = document.selectListForm;
+	f.action="<%=cp%>/board/list.do";
 	f.submit();
 }
 
@@ -80,10 +81,10 @@ function selectList(){
 	<div class="container" role="main">
 		<div style="margin: 10px;">
 			<form name="selectListForm" method="post" class="form-inline">
-				<select class="form-control input-sm" name="sort">
-					<option value="#">번호순</option>
-					<option value="#">인기순</option>
-					<option value="#">추천순</option>
+				<select class="form-control input-sm" name="sort" onchange="selectList();">
+					<option value="b.boardnum">번호순</option>
+					<option value="b.hitcount">인기순</option>
+					<!-- <option value="#">추천순</option> -->
 				</select>
 			</form>
 
@@ -104,12 +105,14 @@ function selectList(){
 				<c:forEach var="dto" items="${list}">
 					<tr>
 						<td class="text-center">${dto.listNum}</td>
-						<td class="text-center"><c:if test="${dto.depth>0 }">
+						<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<c:if test="${dto.depth>0 }">
 								<c:forEach var="i" begin="1" end="${dto.depth}">
-	                        		&nbsp;&nbsp;
+	                        		
 	                        		</c:forEach>
 								<img src="<%=cp%>/res/images/re.gif">
-							</c:if> <a href="${articleUrl}&boardNum=${dto.boardNum}" >${dto.subject}</a></td>
+						</c:if>
+						<a href="${articleUrl}&boardNum=${dto.boardNum}">${dto.subject}</a></td>
 						<td class="text-center">${dto.userName}</td>
 						<td class="text-center">${dto.created}</td>
 						<td class="text-center">${dto.hitCount}</td>
@@ -118,6 +121,14 @@ function selectList(){
 			</table>
 
 		</div>
+		<div class="paging" style="text-align: center; min-height: 50px; line-height: 50px;">
+	         <c:if test="${dataCount==0}">
+	         	등록된 게시물이 없습니다
+	         </c:if>
+	            <c:if test="${dataCount!=0}">
+	         	${paging}
+	         </c:if>
+	    </div>
 		<div style="clear: both;">
 			<div style="float: left; width: 20%; min-width: 85px;">
 				<button type="button" class="btn btn-primary btn-sm bbtn"
@@ -138,6 +149,7 @@ function selectList(){
 					</button>
 				</form>
 			</div>
+			     
 			<div
 				style="float: left; width: 20%; min-width: 85px; text-align: right;">
 				<button type="button" class="btn btn-primary btn-sm bbtn"

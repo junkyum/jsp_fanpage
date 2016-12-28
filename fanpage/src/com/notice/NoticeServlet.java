@@ -37,7 +37,7 @@ public class NoticeServlet extends MyServlet{
 		//SessionInfo info = (SessionInfo)session.getAttribute("member");
 
 		/*if(info==null){
-			resp.sendRedirect(cp+"/member/login.do");
+			resp.sendRedirect(cp+"/member/login.do");asdadsasd
 		}*/
 		
 		String root = session.getServletContext().getRealPath("/");

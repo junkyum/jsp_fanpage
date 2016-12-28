@@ -119,6 +119,7 @@ public class MemberServlet extends MyServlet{
 		pathname=root+File.separator+"uploads"+File.separator+"myPhoto";
 	
 		File f= new File(pathname);
+		
 		if(!f.exists())
 			f.mkdirs();
 	
@@ -131,8 +132,9 @@ public class MemberServlet extends MyServlet{
 			
 		String saveFile = mreq.getFilesystemName("myPhoto");
 		saveFile=FileManager.doFilerename(pathname, saveFile);
-	
-		dto.setMyPhoto(saveFile);			
+
+		dto.setMyPhoto(saveFile);
+
 		dto.setUserId(mreq.getParameter("userId"));
 		dto.setUserName(mreq.getParameter("userName"));
 		dto.setUserPw(mreq.getParameter("userPw"));
@@ -218,15 +220,23 @@ public class MemberServlet extends MyServlet{
 		int maxSize=5*1024*1024;
 		MultipartRequest mreq=new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
 			
-		String saveFile = mreq.getFilesystemName("myPhoto");
-		if(saveFile!=null){
-			saveFile=FileManager.doFilerename(pathname, saveFile);
-			dto.setMyPhoto(saveFile);	
-			info.setMyPhoto(saveFile);
 
+		String saveFile = mreq.getFilesystemName("myPhoto");//새롭게 저장한 사진.
+		
+		String beforePhoto =mreq.getParameter("myPhoto");//그전에 저장되어있는 파일
+		
+		if(saveFile!=null){	//save에 정보가 들어있다면.
+			if(!beforePhoto.equals(saveFile))
+				FileManager.doFiledelete(pathname, beforePhoto);
+				
+					saveFile=FileManager.doFilerename(pathname, saveFile);
+					dto.setMyPhoto(saveFile);				
+					info.setMyPhoto(saveFile);//인포에 세롭게 저장
 		}else {
 			dto.setMyPhoto(mreq.getParameter("imgFile"));	
 		}
+	
+		
 //////////////////////////////////////////////////////////////
 		dto.setUserId(mreq.getParameter("userId"));
 		dto.setUserName(mreq.getParameter("userName"));
@@ -259,23 +269,43 @@ public class MemberServlet extends MyServlet{
 	//탈퇴를 했을떄의 상황
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		
+		//System.out.println(sesion.getAttribute("member"));
 		MemberDAO dao= new MemberDAO();
 		HttpSession sesion= req.getSession();
-		//System.out.println(sesion.getAttribute("member"));
 		SessionInfo info= (SessionInfo)sesion.getAttribute("member");
 		String userId= (String)info.getUserId();
+		String myPhoto =(String)info.getMyPhoto();
+	
+		String saveFile=req.getParameter(myPhoto);
+		FileManager.doFiledelete(pathname, myPhoto);
+		System.out.println(myPhoto+"-----------------------");
+			
 		req.setAttribute("userId", userId);
 		int check=dao.delete(userId);
 		if(check==1)
 			sesion.invalidate();
-		
+	   
 		
 		
 		forward(req, resp, "/WEB-INF/views/member/login.jsp");
 	}
 	
+/*	HttpSession sesion = req.getSession();
+	String root= sesion.getServletContext().getRealPath("/");
+	pathname=root+File.separator+"uploads"+File.separator+"myPhoto";
+	SessionInfo info = (SessionInfo)sesion.getAttribute("member");	
+	String encType="UTF-8";
+	int maxSize=5*1024*1024;
+	MultipartRequest mreq=new MultipartRequest(req, pathname, maxSize, encType, new DefaultFileRenamePolicy());
+		
+
+	String saveFile = mreq.getFilesystemName("myPhoto");//새롭게 저장한 사진.
 	
+	String beforePhoto =mreq.getParameter("myPhoto");//그전에 저장되어있는 파일
 	
-	
+	if(saveFile!=null){	//save에 정보가 들어있다면.
+		if(!beforePhoto.equals(saveFile))
+			FileManager.doFiledelete(pathname, beforePhoto);
+	*/
 
 }

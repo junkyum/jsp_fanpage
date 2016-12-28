@@ -7,6 +7,7 @@ public class NoticeDTO {
 	private String savefileName, originalfileName;
 	private int hitCount;
 	private long fileSize;
+	//올라가라
 	public int getNum() {
 		return num;
 	}

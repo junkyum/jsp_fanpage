@@ -81,12 +81,8 @@ function deleteNotice(num) {
 						<thead>
 						<tbody >
 							<tr>
-								<%-- <td style="text-align: left;">
-	                         		   이름 : ${dto.userName}
-	                         	</td> --%>
 								<td style="text-align: left;">작성일: ${dto.created}</td>
 								<td style="text-align: right;">조회수: ${dto.hitCount }</td>
-
 							</tr>
 							<%-- <tr style="border-bottom: none;">
 								<td colspan="2"><img
@@ -118,8 +114,7 @@ function deleteNotice(num) {
 								</td>
 								<td align="right">
 									<button type="button" class="btn btn-default btn-sm wbtn"
-										onclick="javascript:location.href='<%=cp%>/notice/list.do?page=${page}';">
-										목록으로</button>
+										onclick="javascript:location.href='<%=cp%>/notice/list.do?page=${page}';">목록으로</button>
 								</td>
 							</tr>
 						</tfoot>
@@ -132,11 +127,8 @@ function deleteNotice(num) {
 		<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
 	</div>
 
-	<script type="text/javascript"
-		src="<%=cp%>/res/jquery/js/jquery-ui.min.js"></script>
-	<script type="text/javascript"
-		src="<%=cp%>/res/jquery/js/jquery.ui.datepicker-ko.js"></script>
-	<script type="text/javascript"
-		src="<%=cp%>/res/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="<%=cp%>/res/jquery/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="<%=cp%>/res/jquery/js/jquery.ui.datepicker-ko.js"></script>
+	<script type="text/javascript" src="<%=cp%>/res/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

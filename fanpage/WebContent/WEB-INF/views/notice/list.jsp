@@ -40,6 +40,7 @@ function searchList() {
 <div class="container" role="main">
     <div class="bodyFrame">
         <div class="body-title">
+        <span class="glyphicon glyphicon-bullhorn"></span>&nbsp;
           <img src="<%=cp%>/res/images/notice_btn.gif" 
           onclick="javascript:location.href='<%=cp%>/notice/list.do';"></div>
         
@@ -61,7 +62,8 @@ function searchList() {
 							<td>
 							<a href="${articleUrl }&num=${dto.num}">${dto.subject }	&nbsp;
 							  <c:if test="${not empty dto.savefileName}">
-							  	<img src="<%=cp%>/res/images/disk.gif">
+							  <span class="glyphicon glyphicon-download-alt"></span>
+							  	<%-- <img src="<%=cp%>/res/images/disk.gif"> --%>
 							  </c:if></a>
 							</td>
 								<td class="text-center">${dto.created }</td>

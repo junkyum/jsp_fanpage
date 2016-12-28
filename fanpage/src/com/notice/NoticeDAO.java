@@ -108,9 +108,7 @@ public class NoticeDAO {
 		}
 		
 		return result;
-	}
-	
-	
+	}	
 	
 	public int updateHitCount(int num){
 		int result=0;

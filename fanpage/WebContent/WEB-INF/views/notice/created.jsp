@@ -99,23 +99,6 @@
 	}
 	</c:if>
 
-	/* 		if(mode=="created"||mode=="update" && f.upload.value!="") {
-	 if(! /(\.gif|\.jpg|\.png|\.jpeg|\.txt|\.hwp)$/i.test(f.upload.value)) {
-	 alert('이미지 파일만 가능합니다. !!!');
-	 f.upload.focus();
-	 return false;
-	 }
-	 } 
-	
-	 }
-	
-	 function imageViewer(img) {
-	 var preViewer = $("#imageViewModal .modal-body");
-	 var s="<img src='"+img+"' width='570' height='450'>";
-	 preViewer.html(s);
-	
-	 $('#imageViewModal').modal('show');
-	 } */
 </script>
 
 </head>

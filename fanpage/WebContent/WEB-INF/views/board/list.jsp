@@ -89,9 +89,8 @@ function selectList(){
 			</form>
 
 		</div> -->
-		<div style ="margin-top: 10px;">
-		<img src="<%=cp%>/res/images/board.jpg">
-		<hr>
+		<div class="body-title" style ="margin-top: 10px;">
+		<img src="<%=cp%>/res/images/board.jpg" onclick="javascript:location.href='<%=cp%>/board/list.do';">
 		</div>
 		<div class="table-responsive" style="clear: both;margin: 10px;">
 			<table class="table table-hover">

@@ -291,7 +291,7 @@ function check(){
 	<form name="memberForm" method="post"  onsubmit="return check();" enctype="multipart/form-data">
 		<div class="member-info">
 			<div class="member-header">
-		   		 <h1> ★ 회원 가입 ★ </h1>
+		   		 <h1> 회원 가입 </h1>
 		  	</div>
 		  	
 		  	
@@ -371,7 +371,7 @@ function check(){
 			     	<input type="checkbox" name="userHobby" id="userHobby" value="모모">모모
 			     	<input type="checkbox" name="userHobby" id="userHobby" value="정연">정연
 			     	<input type="checkbox" name="userHobby" id="userHobby" value="나연">나연
-		  		 <h4 class="no-access">누가 좋아</h4>
+		  		
 		  	
 		  	
 		  

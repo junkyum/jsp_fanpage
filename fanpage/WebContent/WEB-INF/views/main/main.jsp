@@ -34,8 +34,8 @@
 <div class="container" role="main">
     <div class="bodyFrame">
         
-        <div style="margin: 20px auto; width: 80%;">
-        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ePpPVE-GGJw?rel=0" allowfullscreen ></iframe>
+        <div>
+        <iframe width="640px" height="480px" src="https://www.youtube.com/embed/ePpPVE-GGJw?rel=0" allowfullscreen style="margin-left: 200px;" ></iframe>
         </div>
          
     </div>

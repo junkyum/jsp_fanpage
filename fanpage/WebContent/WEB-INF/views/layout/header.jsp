@@ -37,7 +37,7 @@
 				</c:if>
 				<c:if test="${not empty sessionScope.member}">
 					<li>
-						<button type="button" class="btn btn-danger navbar-btn dropdown-toggle"
+						<button type="button" class="btn btn-info navbar-btn"
 							data-toggle="modal" data-target=".bs-example-modal-sm">${sessionScope.member.userName}의 정보보기</button>
 
 						<div class="modal fade bs-example-modal-sm" tabindex="-1"
